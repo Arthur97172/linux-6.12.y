@@ -313,6 +313,7 @@
 	status = "okay";
 	skip-version-detect;
 	reset-gpios = <&gpio GPIOH_4 GPIO_ACTIVE_LOW>; /* tested by voltmeter */
+	reset-delay-us = <200000>;
 };
 
 &pwm_ab {
