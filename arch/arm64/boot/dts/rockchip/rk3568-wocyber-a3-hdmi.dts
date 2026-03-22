@@ -17,6 +17,7 @@
 / {
 	model = "Wocyber A3";
 	compatible = "rockchip,wocyber-a3", "rockchip,rk3568";
+	hw_support = "hdmi";
 
 	aliases {
 		ethernet0 = &gmac0;
@@ -33,7 +34,7 @@
 		power-supply = <&vcc3v3_sys>;
 		pwms = <&pwm4 0 25000 0>;
 	};
-
+	
 	chosen: chosen {
 		stdout-path = "serial2:1500000n8";
 	};
@@ -49,6 +50,7 @@
 
 	hdmi-con {
 		compatible = "hdmi-connector";
+		hdmi-pwr-supply = <&hdmi_tx_5v>;
 		type = "a";
 
 		port {
@@ -56,6 +58,18 @@
 				remote-endpoint = <&hdmi_out_con>;
 			};
 		};
+	};
+
+	hdmi_tx_5v: regulator-hdmi-tx-5v {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio4 RK_PC5 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&hdmi_tx_5v_en>;
+		regulator-name = "hdmi_tx_5v";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		vin-supply = <&dc_12v>;
 	};
 
 	leds {
@@ -203,13 +217,6 @@
 	status = "okay";
 };
 
-&dsi0_in {
-	status = "disabled";
-	dsi0_in_vp1: endpoint {
-		remote-endpoint = <&vp1_out_dsi0>;
-	};
-};
-
 &gmac0 {
 	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>, <&cru SCLK_GMAC0>;
 	assigned-clock-parents = <&cru SCLK_GMAC0_RGMII_SPEED>;
@@ -237,6 +244,9 @@
 };
 
 &hdmi {
+	pinctrl-names = "default";
+    pinctrl-0 = <&hdmitx_scl &hdmitx_sda &hdmitxm0_cec>; 
+    hdmi-pwr-supply = <&hdmi_tx_5v>;
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
 	status = "okay";
@@ -245,12 +255,14 @@
 &hdmi_in {
 	hdmi_in_vp0: endpoint {
 		remote-endpoint = <&vp0_out_hdmi>;
+		status = "okay";
 	};
 };
 
 &hdmi_out {
 	hdmi_out_con: endpoint {
 		remote-endpoint = <&hdmi_con_in>;
+		status = "okay";
 	};
 };
 
@@ -312,7 +324,7 @@
 				regulator-min-microvolt = <500000>;
 				regulator-max-microvolt = <1350000>;
 				regulator-ramp-delay = <6001>;
-				status = "okay";
+
 				regulator-state-mem {
 					regulator-off-in-suspend;
 				};
@@ -555,6 +567,12 @@
 		};
 	};
 
+	hdmitx {
+		hdmi_tx_5v_en: hdmi-tx-5v-en-pinctrl {
+			rockchip,pins = <4 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
 	pmic {
 		pmic_int: pmic_int {
 			rockchip,pins =
@@ -703,9 +721,8 @@
 };
 
 &vop {
-	assigned-clocks = <&cru DCLK_VOP0>, <&cru PLL_VPLL>, <&cru DCLK_VOP1>;
-	assigned-clock-parents = <&pmucru PLL_HPLL>, <&xin24m>, <&cru PLL_VPLL>;
-	assigned-clock-rates = <0>, <132000000>, <132000000>;
+	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
+	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
 	status = "okay";
 };
 
@@ -720,9 +737,15 @@
 	};
 };
 
-&vp1 {
-	vp1_out_dsi0: endpoint@ROCKCHIP_VOP2_EP_MIPI0 {
-		reg = <ROCKCHIP_VOP2_EP_MIPI0>;
-		remote-endpoint = <&dsi0_in_vp1>;
+&display_subsystem {
+    route {
+		route-hdmi {
+			status = "okay";
+			logo,uboot = "logo.bmp";
+			logo,kernel = "logo_kernel.bmp";
+			logo,mode = "center";
+			charge_logo,mode = "center";
+			connect = <&vp0_out_hdmi>;
+		};
 	};
-};
+};	
