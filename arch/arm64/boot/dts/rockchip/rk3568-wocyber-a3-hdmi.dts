@@ -720,16 +720,4 @@
 		remote-endpoint = <&hdmi_in_vp0>;
 	};
 };
-
-&display_subsystem {
-    route {
-		route-hdmi {
-			status = "okay";
-			logo,uboot = "logo.bmp";
-			logo,kernel = "logo_kernel.bmp";
-			logo,mode = "center";
-			charge_logo,mode = "center";
-			connect = <&vp0_out_hdmi>;
-		};
-	};
-};	
+	
