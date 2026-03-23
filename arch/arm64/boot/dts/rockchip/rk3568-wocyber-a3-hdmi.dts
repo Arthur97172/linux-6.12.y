@@ -498,11 +498,6 @@
 		};
 	};
 
-	hdmitx {
-		hdmi_tx_5v_en: hdmi-tx-5v-en-pinctrl {
-			rockchip,pins = <4 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
 
 	pmic {
 		pmic_int: pmic_int {
