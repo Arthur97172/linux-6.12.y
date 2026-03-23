@@ -637,4 +637,12 @@
 		remote-endpoint = <&hdmi_in_vp0>;
 	};
 };
-	
+
+&display_subsystem {
+    route {
+        route-hdmi {
+            status = "okay";
+            connect = <&vp0_out_hdmi>;
+        };
+    };
+};
