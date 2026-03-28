@@ -12,5 +12,13 @@
 			pmsg-size = <0x50000>;
 			record-size = <0x20000>;
 		};
+
+		linux,cma {
+			compatible = "shared-dma-pool";
+			reusable;
+			size = <0x00 0x10000000>;
+			alignment = <0x00 0x400000>;
+			linux,cma-default;
+		};
 	};
 };
