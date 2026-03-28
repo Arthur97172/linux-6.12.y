@@ -598,3 +598,8 @@
 	};
 };
 
+&display_subsystem {
+	compatible = "rockchip,display-subsystem";
+	status = "okay";
+};
+
