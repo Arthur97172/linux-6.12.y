@@ -188,8 +188,6 @@
 };
 
 &hdmi {
-	pinctrl-names = "default";
-    	pinctrl-0 = <&hdmi_i2c_xfer>;
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
 	status = "okay";
@@ -606,6 +604,7 @@
 
 &display_subsystem {
 	compatible = "rockchip,display-subsystem";
+	ports = <&vop_out>;
 	status = "okay";
 };
 
