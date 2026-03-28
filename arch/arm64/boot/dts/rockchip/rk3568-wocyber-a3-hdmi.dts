@@ -598,10 +598,6 @@
 	};
 };
 
-&vp1 {
-    status = "okay";
-};
-
 &display_subsystem {
 	compatible = "rockchip,display-subsystem";
 	ports = <&vop_out>;
