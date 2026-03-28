@@ -21,9 +21,7 @@
 
 	aliases {
 		ethernet0 = &gmac0;
-		ethernet1 = &gmac1;
-		mmc0 = &sdmmc0;
-		mmc1 = &sdhci;
+		mmc0 = &sdhci;
 	};
 	
 	chosen: chosen {
@@ -130,7 +128,6 @@
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&vcc5v0_usb>;
 	};
-
 };
 
 &combphy0 {
@@ -199,14 +196,12 @@
 &hdmi_in {
 	hdmi_in_vp0: endpoint {
 		remote-endpoint = <&vp0_out_hdmi>;
-		status = "okay";
 	};
 };
 
 &hdmi_out {
 	hdmi_out_con: endpoint {
 		remote-endpoint = <&hdmi_con_in>;
-		status = "okay";
 	};
 };
 
@@ -258,10 +253,7 @@
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
 		wakeup-source;
-
-		pwrkey {
-			status = "okay";
-		};
+		long-press-off-time-sec = <10>;
 
 		regulators {
 			vdd_logic: DCDC_REG1 {
@@ -433,15 +425,6 @@
 					regulator-off-in-suspend;
 				};
 			};
-
-			vcc3v3_sd: SWITCH_REG2 {
-				regulator-name = "vcc3v3_sd";
-				regulator-min-microvolt = <3300000>;
-				regulator-max-microvolt = <3300000>;
-				regulator-state-mem {
-					regulator-off-in-suspend;
-				};
-			};
 		};
 
 		codec {
@@ -468,16 +451,6 @@
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x0>;
 		clocks = <&cru &i2s1m0_sclktx>;
-	};
-};
-
-&mdio1 {
-	rgmii_phy1: ethernet-phy@0 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x0>;
-		reset-assert-us = <20000>;
-		reset-deassert-us = <100000>;
-		reset-gpios = <&gpio2 RK_PD1 GPIO_ACTIVE_LOW>;
 	};
 };
 
@@ -541,19 +514,6 @@
 	non-removable;
 	pinctrl-names = "default";
 	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd &emmc_datastrobe>;
-	status = "okay";
-};
-
-&sdmmc0 {
-	bus-width = <4>;
-	cap-sd-highspeed;
-	cd-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_LOW>;
-	disable-wp;
-	pinctrl-names = "default";
-	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
-	sd-uhs-sdr104;
-	vmmc-supply = <&vcc3v3_sd>;
-	vqmmc-supply = <&vccio_sd>;
 	status = "okay";
 };
 
