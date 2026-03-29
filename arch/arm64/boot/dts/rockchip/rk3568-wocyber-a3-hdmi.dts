@@ -207,8 +207,8 @@
 };
 
 &hdmi_in {
-	hdmi_in_vp3: endpoint {
-		remote-endpoint = <&vp3_out_hdmi>;
+	hdmi_in_vp0: endpoint {
+		remote-endpoint = <&vp0_out_hdmi>;
 	};
 };
 
