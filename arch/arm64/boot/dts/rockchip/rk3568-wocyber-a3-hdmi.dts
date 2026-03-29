@@ -491,6 +491,11 @@
 		};
 	};
 
+	gsensor {
+		gsensor_int_l: gsensor-int-l {
+			rockchip,pins = <3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
 
 	usb {
 		vcc5v0_usb_host_en: vcc5v0_usb_host_en {
