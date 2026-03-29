@@ -128,6 +128,17 @@
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&vcc5v0_usb>;
 	};
+	vcc3v3_pcie: vcc3v3-pcie-regulator {
+    		compatible = "regulator-gpio";
+    		regulator-name = "vcc3v3_pcie";
+    		gpios = <&gpio0 RK_PD4 GPIO_ACTIVE_HIGH>;
+    		states = <100000 0x0>, <3300000 0x1>;
+    		regulator-min-microvolt = <100000>;
+    		regulator-max-microvolt = <3300000>;
+    		regulator-always-on;
+    		regulator-boot-on;
+    		vin-supply = <&vcc5v0_sys>; 
+	};
 };
 
 &combphy0 {
@@ -454,6 +465,12 @@
 		reg = <0x0>;
 		clocks = <&cru &i2s1m0_sclktx>;
 	};
+};
+
+&pcie2x1 {
+	reset-gpios = <&gpio3 RK_PD6 GPIO_ACTIVE_HIGH>;
+	vpcie3v3-supply = <&vcc3v3_pcie>;
+	status = "okay";
 };
 
 &pinctrl {
