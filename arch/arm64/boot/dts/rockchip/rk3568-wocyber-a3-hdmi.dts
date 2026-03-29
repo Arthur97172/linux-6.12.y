@@ -623,10 +623,6 @@
 	status = "okay";
 };
 
-&video_codec {
-    status = "disabled";
-};
-
 &vdpu {
     status = "okay";
 };
