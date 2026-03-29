@@ -651,6 +651,18 @@
 	status = "okay";
 };
 
-&hevc_codec {
-	status = "disabled";
+&{/video-codec@fdea0400} {
+    status = "disabled";
+};
+
+&{/vdpu@fdea0400} {
+    status = "okay";
+};
+
+&{/rga@fdeb0000} {
+    status = "disabled";
+};
+
+&{/rk_rga@fdeb0000} {
+    status = "okay";
 };
