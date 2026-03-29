@@ -203,12 +203,15 @@
 &hdmi {
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
+	ddc-i2c-bus = <&i2c0>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&hdmitx_m0_cec &hdmitx_m0_hpd &hdmitx_m0_scl &hdmitx_m0_sda>;
 	status = "okay";
 };
 
 &hdmi_in {
-	hdmi_in_vp0: endpoint {
-		remote-endpoint = <&vp0_out_hdmi>;
+	hdmi_in_vp3: endpoint {
+		remote-endpoint = <&vp3_out_hdmi>;
 	};
 };
 
@@ -610,10 +613,11 @@
 	status = "okay";
 };
 
-&vp0 {
-	vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
+&vp3 {
+	status = "okay";
+	vp3_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
 		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
-		remote-endpoint = <&hdmi_in_vp0>;
+		remote-endpoint = <&hdmi_in_vp3>;
 	};
 };
 
