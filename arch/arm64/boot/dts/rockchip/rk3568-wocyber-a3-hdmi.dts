@@ -452,6 +452,27 @@
 	status = "disabled";
 };
 
+&i2c3 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c3m0_xfer>;
+
+	hym8563: rtc@51 {
+		compatible = "haoyu,hym8563";
+		reg = <0x51>;
+		#clock-cells = <0>;
+	};
+
+	accelerometer@15 {
+		compatible = "memsic,mxc6655";
+		reg = <0x15>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <RK_PC1 IRQ_TYPE_LEVEL_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&gsensor_int_l>;
+	};
+};
+
 &i2s0_8ch {
 	status = "okay";
 };
