@@ -206,6 +206,25 @@
 	avdd-1v8-supply = <&vcca1v8_image>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&hdmitxm0_cec &hdmitxm0_scl &hdmitxm0_sda>;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			hdmi_in_vp3: endpoint {
+				remote-endpoint = <&vp3_out_hdmi>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			hdmi_out_con: endpoint {
+				remote-endpoint = <&hdmi_con_in>;
+			};
+		};
+	};
 };
 
 &hdmi_in {
@@ -458,6 +477,8 @@
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c3m0_xfer>;
+	i2c-scl-rising-time-ns = <450>;
+	i2c-scl-falling-time-ns = <15>;
 
 	hym8563: rtc@51 {
 		compatible = "haoyu,hym8563";
@@ -630,7 +651,7 @@
 
 &vop {
 	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>, <&cru DCLK_VOP2>;
-	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>, <&cru PLL_GPLL>;
+	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>, <&cru PLL_VOP>; 
 	status = "okay";
 };
 
