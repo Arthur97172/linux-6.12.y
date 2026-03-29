@@ -622,11 +622,3 @@
 	ports = <&vop_out>;
 	status = "okay";
 };
-
-&vdpu {
-    status = "okay";
-};
-
-&vdpu_mmu {
-    status = "okay";
-};
