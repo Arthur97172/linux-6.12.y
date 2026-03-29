@@ -201,9 +201,11 @@
 };
 
 &hdmi {
+	status = "okay";
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
-	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&hdmitxm0_cec &hdmitxm0_scl &hdmitxm0_sda>;
 };
 
 &hdmi_in {
@@ -636,11 +638,14 @@
 	status = "okay";
 };
 
-&vp3 {
+&vop_out {
 	status = "okay";
-	vp3_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
-		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
-		remote-endpoint = <&hdmi_in_vp3>;
+
+	vp3: port@3 {
+		reg = <3>;
+		vp3_out_hdmi: endpoint {
+			remote-endpoint = <&hdmi_in_vp3>;
+		};
 	};
 };
 
