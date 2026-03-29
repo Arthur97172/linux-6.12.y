@@ -650,3 +650,7 @@
 	ports = <&vop_out>;
 	status = "okay";
 };
+
+&hevc_codec {
+	status = "disabled";
+};
