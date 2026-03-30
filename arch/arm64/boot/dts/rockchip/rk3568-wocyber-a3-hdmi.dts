@@ -654,38 +654,10 @@
 };
 
 &vop {
-	compatible = "rockchip,rk3568-vop";
-	reg = <0x0 0xfe040000 0x0 0x3000>,
-	      <0x0 0xfe044000 0x0 0x1000>;
-	reg-names = "regs", "gamma_lut";
-	rockchip,grf = <&grf>;
-	interrupts = <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>;
-	clocks = <&cru ACLK_VOP>, <&cru HCLK_VOP>,
-	         <&cru DCLK_VP0>, <&cru DCLK_VP1>, <&cru DCLK_VP2>;
-	clock-names = "aclk_vop", "hclk_vop",
-	              "dclk_vp0", "dclk_vp1", "dclk_vp2";
-	iommus = <&vop_mmu>;
-	power-domains = <&power 9>;
-	assigned-clocks = <&cru DCLK_VP0>, <&cru DCLK_VP1>;
+	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
 	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
-	disable-win-move;
+	power-domains = <&power 9>;
 	status = "okay";
-
-	ports {
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		vop_out: port@0 {
-			reg = <0>;
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			vp0_out_hdmi: endpoint@0 {
-				reg = <0>;
-				remote-endpoint = <&hdmi_in_vp0>;
-			};
-		};
-	};
 };
 
 &vop_mmu {
