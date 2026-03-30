@@ -656,7 +656,7 @@
 &vop {
 	assigned-clocks = <&cru DCLK_VP0>;
 	assigned-clock-parents = <&pmucru PLL_HPLL>;
-	power-domains = <&power 9>;      // 或尝试 <&pd_vo>
+	power-domains = <&power 9>;
 	status = "okay";
 
 	ports {
