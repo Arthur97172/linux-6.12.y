@@ -9,6 +9,8 @@
 #include <dt-bindings/leds/common.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/soc/rockchip,vop2.h>
+#include <dt-bindings/clock/rk3568-cru.h>
+#include <dt-bindings/power/rk3568-power.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include "rk3568.dtsi"
 #include "rk3568-ip.dtsi"
