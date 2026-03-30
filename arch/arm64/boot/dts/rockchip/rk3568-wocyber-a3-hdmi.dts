@@ -522,6 +522,19 @@
 		};
 	};
 
+	hdmitx {
+		hdmitx_scl: hdmitx-scl {
+			rockchip,pins = <4 RK_PB1 1 &pcfg_pull_none>;
+		};
+
+		hdmitx_sda: hdmitx-sda {
+			rockchip,pins = <4 RK_PB2 1 &pcfg_pull_none>;
+		};
+
+		hdmitxm0_cec: hdmitxm0-cec {
+			rockchip,pins = <4 RK_PB3 1 &pcfg_pull_none>;
+		};
+	};
 
 	pmic {
 		pmic_int: pmic_int {
