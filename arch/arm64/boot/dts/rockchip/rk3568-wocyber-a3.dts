@@ -758,3 +758,12 @@
 		remote-endpoint = <&dsi0_in_vp1>;
 	};
 };
+
+
+/ {
+    /delete-node/ video-codec@fdea0400;
+};
+
+/ {
+    /delete-node/ rga@fdeb0000;
+};
