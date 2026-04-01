@@ -504,11 +504,6 @@
 				};
 			};
 		};
-
-		codec {
-			rockchip,mic-in-differential;
-			status = "okay";
-		};
 	};
 };
 
