@@ -767,9 +767,9 @@
 
 
 / {
-    /delete-node/ video-codec@fdea0400;
+	/delete-node/ video-codec@fdea0400;
 };
 
 / {
-    /delete-node/ rga@fdeb0000;
+	/delete-node/ rga@fdeb0000;
 };
