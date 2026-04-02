@@ -543,6 +543,7 @@
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x0>;
 		clocks = <&cru &i2s1m0_sclktx>;
+		realtek,led-data = <0x6d60>;
 	};
 };
 
