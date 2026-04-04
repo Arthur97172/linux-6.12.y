@@ -250,6 +250,10 @@
 	status = "okay";
 };
 
+&bus_npu {
+	status = "okay";
+};
+
 &rknpu {
 	rknpu-supply = <&vdd_npu>;
 	status = "okay";
