@@ -52,6 +52,7 @@
 			};
 		};
 	};	
+
 	adc_keys: adc-keys {
 		compatible = "adc-keys";
 		io-channels = <&saradc 0>;
