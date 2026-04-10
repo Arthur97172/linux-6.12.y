@@ -373,6 +373,18 @@
 	status = "okay";
 };
 
+&rknpu {
+	rknpu-supply = <&vdd_npu>;
+	interrupt-names = "npu_irq"; 
+	status = "okay";
+};
+
+&bus_npu {
+	bus-supply = <&vdd_logic>;
+	pvtm-supply = <&vdd_cpu>;
+	status = "okay";
+};
+
 &hdmi {
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
@@ -393,22 +405,21 @@
 	};
 };
 
-&vop {
-	assigned-clocks = <&cru DCLK_VOP0>, <&cru PLL_VPLL>, <&cru DCLK_VOP1>;
-	assigned-clock-parents = <&pmucru PLL_HPLL>, <&xin24m>, <&cru PLL_VPLL>;
-	assigned-clock-rates = <0>, <132000000>, <132000000>;
-	status = "okay";
-};
-
-&vop_mmu {
-	status = "okay";
-};
-
 &vp0 {
 	vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
 		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
 		remote-endpoint = <&hdmi_in_vp0>;
 	};
+};
+
+&vop {
+	status = "okay";
+	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
+	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
+};
+
+&vop_mmu {
+	status = "okay";
 };
 
 &i2c0 {
@@ -646,7 +657,8 @@
 					regulator-off-in-suspend;
 				};
 			};
-
+		};
+		
 		rk809_codec: codec {
 			#sound-dai-cells = <0>;
 			mic-in-differential;
@@ -781,19 +793,20 @@
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&spi3m1_cs0 &spi3m1_pins>;
-
 	st7789v@0 {
-		compatible = "sitronix,st7789v";
-		reg = <0>;
-		status = "okay";
-		spi-max-frequency = <48000000>;
-		width = <240>;
-		height = <320>;
-		dc-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
-		reset-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
-		backlight = <&backlight_display>;
-		rotation = <90>;
-	};
+			status = "okay";
+            compatible = "sitronix,st7789v";
+            reg = <0>;
+            spi-max-frequency = <12000000>;           
+			bgr;
+            fps = <30>;
+			rotate = <90>;
+            buswidth = <8>; 
+			dc-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;  
+            reset-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>; 
+            led-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_LOW>;           
+            debug = <0>; 
+       };
 };
 
 &pcie2x1 {
