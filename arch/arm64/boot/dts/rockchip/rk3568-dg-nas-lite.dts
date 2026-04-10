@@ -668,10 +668,6 @@
 	pcf8563: rtc@51 {
 		compatible = "nxp,pcf8563";
 		reg = <0x51>;
-		/* 如果硬件上有引脚连接到 GPIO，请取消下面的注释 
-		   interrupt-parent = <&gpio0>;
-		   interrupts = <RK_PA2 IRQ_TYPE_LEVEL_LOW>; 
-		*/
 		#clock-cells = <0>;
 	};
 };
