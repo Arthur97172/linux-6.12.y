@@ -184,13 +184,21 @@
 		vin-supply = <&vcc3v3_sys>;
 	};
 
-	vcc_wifi_pwr: vcc-wifi-pwr {
-		compatible = "regulator-fixed";
-		regulator-name = "vcc_wifi_pwr";
-		gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		regulator-always-on;
-		regulator-boot-on;
+    	wireless_wlan {
+        	compatible = "wlan-platdata";    
+        	wifi_chip_type = "rtl8723du";
+        	rockchip,grf = <&grf>;
+        	WIFI,poweren_gpio = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
+        	keep_wifi_power_on;
+        	status = "okay";
+    	};
+	
+	wireless_bluetooth: wireless-bluetooth {
+		compatible = "bluetooth-platdata";
+		clocks = <&rk809 1>;
+		clock-names = "ext_clock";
+		//wifi-bt-power-toggle;
+		status = "okay";
 	};
 
 	leds {
