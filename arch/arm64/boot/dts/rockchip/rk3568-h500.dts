@@ -650,6 +650,10 @@
 	};
 };
 
+&i2s0_8ch {
+	status = "okay";
+};
+
 &i2c3 {
 	status = "okay";
 };
