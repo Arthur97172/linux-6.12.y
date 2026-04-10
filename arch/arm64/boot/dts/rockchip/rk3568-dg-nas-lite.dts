@@ -367,7 +367,7 @@
 	snps,reset-delays-us = <0 20000 100000>;
 	reset-gpios = <&gpio3 RK_PA7 GPIO_ACTIVE_LOW>;
 	tx_delay = <0x2e>;
-    rx_delay = <0x2a>;	
+	rx_delay = <0x2a>;	
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac0_miim
 		     &gmac0_tx_bus2
