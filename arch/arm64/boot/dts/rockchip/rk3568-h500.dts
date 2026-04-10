@@ -30,18 +30,6 @@
 		stdout-path = "serial2:1500000n8";
 	};
 
-	ir_receiver: ir-receiver {
-		compatible = "pwm-ir-recv";
-		pwms = <&pwm15 0 10000000 0>; 
-		linux,rc-map-name = "rc-empty"; 
-	};
-
-	backlight_display: backlight-display {
-		compatible = "gpio-backlight";
-		gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_LOW>;
-		default-on;
-	};
-
 	hdmi-con {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -52,6 +40,7 @@
 			};
 		};
 	};	
+
 	adc_keys: adc-keys {
 		compatible = "adc-keys";
 		io-channels = <&saradc 0>;
