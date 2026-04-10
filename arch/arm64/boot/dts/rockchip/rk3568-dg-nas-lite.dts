@@ -381,18 +381,6 @@
 	status = "okay";
 };
 
-&rknpu {
-	rknpu-supply = <&vdd_npu>;
-	interrupt-names = "npu_irq"; 
-	status = "okay";
-};
-
-&bus_npu {
-	bus-supply = <&vdd_logic>;
-	pvtm-supply = <&vdd_cpu>;
-	status = "okay";
-};
-
 &hdmi {
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
