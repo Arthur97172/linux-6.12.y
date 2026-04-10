@@ -93,11 +93,7 @@
 		regulator-always-on;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-//		enable-active-high;
-//		gpio = <&gpio0 RK_PD4 GPIO_ACTIVE_HIGH>;
 		vin-supply = <&vcc5v0_sys>;
-//		pinctrl-names = "default";
-//		pinctrl-0 = <&vcc5v0_host_en>;
 	};
 
 	vcc5v0_otg: vcc5v0-otg-regulator {
@@ -165,7 +161,6 @@
 		compatible = "bluetooth-platdata";
 		clocks = <&rk809 1>;
 		clock-names = "ext_clock";
-		//wifi-bt-power-toggle;
 		status = "okay";
 	};	
 
@@ -211,9 +206,6 @@
 		#cooling-cells = <2>;
 		pwms = <&pwm0 0 40000 0>;
 		fan-supply = <&dc_12v>;
-		//interrupt-parent = <&gpio0>;
-		//interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
-		//pulses-per-revolution = <2>;
 		cooling-levels = <0 50 100 150 200 255>;
 	};
 };
@@ -601,21 +593,12 @@
 	};
 };
 
-&mdio1 {
-	rgmii_phy1: phy@1 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x1>;
-	};
-};
-
 &gmac0 {
 	phy-mode = "rgmii";
-	//clock_in_out = "output";
 	clock_in_out = "input";
 	
 	snps,reset-gpio = <&gpio3 RK_PA7 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
-	/* Reset time is 20ms, 100ms for rtl8211f */
 	snps,reset-delays-us = <0 20000 100000>;
 
 	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>, <&cru SCLK_GMAC0>;
@@ -635,35 +618,6 @@
 	phy-handle = <&rgmii_phy0>;
 	phy-supply = <&vcc_phy>;
 	status = "okay";	
-};
-
-&gmac1 {
-	phy-mode = "rgmii";
-	//clock_in_out = "output";
-	clock_in_out = "input";
-
-	snps,reset-gpio = <&gpio3 RK_PA6 GPIO_ACTIVE_LOW>;
-	snps,reset-active-low;
-	
-	snps,reset-delays-us = <0 20000 100000>;
-
-	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
-	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
-	assigned-clock-rates = <0>, <125000000>;
-	
-	pinctrl-names = "default";
-	pinctrl-0 = <&gmac1m1_miim
-		     &gmac1m1_tx_bus2
-		     &gmac1m1_rx_bus2
-		     &gmac1m1_rgmii_clk
-		     &gmac1m1_rgmii_bus>;
-
-	tx_delay = <0x3d>;
-	rx_delay = <0x23>;
-
-	phy-handle = <&rgmii_phy1>;
-	phy-supply = <&vcc_phy>;
-	status = "disabled";
 };
 	
 &pcie2x1 {
@@ -752,7 +706,6 @@
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&spi3m1_cs0 &spi3m1_pins>;
-//	pinctrl-1 = <&spi3m1_cs0 &spi3m1_pins_hs>;
 	st7789v@0 {
 			status = "okay";
             compatible = "sitronix,st7789v";
