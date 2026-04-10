@@ -274,20 +274,59 @@
 };
 
 &usb_host0_xhci {
+	phys = <&usb2phy0_otg>;
+	phy-names = "usb2-phy";
+	extcon = <&usb2phy0>;
+	maximum-speed = "high-speed";
 	dr_mode = "host";
 	status = "okay";
 };
 
-&usb_host0_xhci {
+&usb_host1_xhci {
 	status = "okay";
-	
-	dwc3: usb {
-        dr_mode = "host";
-        status = "okay";
-    };
 };
 
-&usb_host1_xhci {
+&usb2phy0 {
+	status = "okay";
+
+	u2phy0_host: host-port {
+		phy-supply = <&vcc5v0_host>;
+		status = "okay";
+	};
+
+	u2phy0_otg: otg-port {
+		vbus-supply = <&vcc5v0_otg>;
+		status = "okay";
+	};
+};
+
+&usb2phy1 {
+	status = "okay";
+
+	u2phy1_host: host-port {
+		phy-supply = <&vcc5v0_host>;
+		status = "okay";
+	};
+
+	u2phy1_otg: otg-port {
+		phy-supply = <&vcc5v0_host>;
+		status = "okay";
+	};
+};
+
+&usb_host0_ehci {
+	status = "okay";
+};
+
+&usb_host0_ohci {
+	status = "okay";
+};
+
+&usb_host1_ehci {
+	status = "okay";
+};
+
+&usb_host1_ohci {
 	status = "okay";
 };
 
@@ -800,50 +839,6 @@
 	pinctrl-0 = <&pcie_reset_h>;
 	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc3v3_sys>;
-	status = "okay";
-};
-
-&usb2phy0 {
-	status = "okay";
-
-	u2phy0_host: host-port {
-		phy-supply = <&vcc5v0_host>;
-		status = "okay";
-	};
-
-	u2phy0_otg: otg-port {
-		vbus-supply = <&vcc5v0_otg>;
-		status = "okay";
-	};
-};
-
-&usb2phy1 {
-	status = "okay";
-
-	u2phy1_host: host-port {
-		phy-supply = <&vcc5v0_host>;
-		status = "okay";
-	};
-
-	u2phy1_otg: otg-port {
-		phy-supply = <&vcc5v0_host>;
-		status = "okay";
-	};
-};
-
-&usb_host0_ehci {
-	status = "okay";
-};
-
-&usb_host0_ohci {
-	status = "okay";
-};
-
-&usb_host1_ehci {
-	status = "okay";
-};
-
-&usb_host1_ohci {
 	status = "okay";
 };
 
