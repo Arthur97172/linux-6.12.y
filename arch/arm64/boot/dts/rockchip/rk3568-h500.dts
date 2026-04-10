@@ -17,8 +17,8 @@
 #include "rk3568-ramoops.dtsi"
 
 / {
-	model = "DG NAS LITE";
-	compatible = "rockchip,dg-nas-lite", "rockchip,rk3568";
+	model = "H500";
+	compatible = "rockchip,h500", "rockchip,rk3568";
 
 	aliases {
 		ethernet0 = &gmac0;
