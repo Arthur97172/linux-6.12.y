@@ -215,10 +215,10 @@
 		};
 	};
 
-	rk809-sound {
+	rk809_sound: rk809-sound {
 		compatible = "simple-audio-card";
 		simple-audio-card,format = "i2s";
-		simple-audio-card,name = "Analog RK809";
+		simple-audio-card,name = "rockchip,rk809-codec";
 		simple-audio-card,mclk-fs = <256>;
 		status = "okay";
 
@@ -226,7 +226,7 @@
 			sound-dai = <&i2s1_8ch>;
 		};
 		simple-audio-card,codec {
-			sound-dai = <&rk809>;
+			sound-dai = <&rk809_codec>;
 		};
 	};
 };
@@ -616,7 +616,22 @@
 				};
 			};
 		};
+
+
+		rk809_codec: codec {
+			#sound-dai-cells = <0>;
+			mic-in-differential;
+		};
 	};
+};
+
+&i2s0_8ch {
+	status = "okay";
+};
+
+&i2s1_8ch {
+	rockchip,trcm-sync-tx-only;
+	status = "okay";
 };
 
 &i2c3 {
@@ -625,15 +640,10 @@
 
 &i2c5 {
 	status = "okay";
-	clock-frequency = <400000>; 
 
 	pcf8563: rtc@51 {
 		compatible = "nxp,pcf8563";
 		reg = <0x51>;
-		/* 如果硬件上有引脚连接到 GPIO，请取消下面的注释 
-		   interrupt-parent = <&gpio0>;
-		   interrupts = <RK_PA2 IRQ_TYPE_LEVEL_LOW>; 
-		*/
 		#clock-cells = <0>;
 	};
 };
