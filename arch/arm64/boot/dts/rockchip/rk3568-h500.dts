@@ -757,12 +757,6 @@
 	status = "okay";
 };
 
-&pwm15 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pwm15m0_pins>;
-	status = "okay";
-};
-
 &spi1 {
 	status = "okay";
 	pinctrl-names = "default";
