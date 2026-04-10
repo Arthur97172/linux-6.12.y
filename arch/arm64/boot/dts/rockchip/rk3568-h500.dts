@@ -215,18 +215,18 @@
 		};
 	};
 
-	rk809-sound {
+	rk809_sound: rk809-sound {
+		status = "okay";
 		compatible = "simple-audio-card";
 		simple-audio-card,format = "i2s";
-		simple-audio-card,name = "Analog RK809";
+		simple-audio-card,name = "rockchip,rk809-codec";
 		simple-audio-card,mclk-fs = <256>;
-		status = "okay";
 
 		simple-audio-card,cpu {
 			sound-dai = <&i2s1_8ch>;
 		};
 		simple-audio-card,codec {
-			sound-dai = <&rk809>;
+			sound-dai = <&rk809_codec>;
 		};
 	};
 };
@@ -439,7 +439,7 @@
 		clock-names = "mclk";
 		clocks = <&cru I2S1_MCLKOUT_TX>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&pmic_int>, <&i2s1m0_mclk>;
+		pinctrl-0 = <&pmic_int>;
 		system-power-controller;
 		#sound-dai-cells = <0>;
 		vcc1-supply = <&vcc3v3_sys>;
@@ -642,6 +642,10 @@
 					regulator-off-in-suspend;
 				};
 			};
+
+		rk809_codec: codec {
+			#sound-dai-cells = <0>;
+			mic-in-differential;
 		};
 	};
 };
