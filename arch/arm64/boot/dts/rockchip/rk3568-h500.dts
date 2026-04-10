@@ -107,6 +107,20 @@
 		regulator-max-microvolt = <3300000>;
 		vin-supply = <&dc_12v>;
 	};
+	
+	sata_en: sata_en {
+		compatible = "regulator-fixed";
+		regulator-name = "sata_en";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		enable-active-high;
+		gpio = <&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&asm1064_rst>;
+		vin-supply = <&dc_12v>;
+	};
 
 	vcc5v0_sys: vcc5v0-sys {
 		compatible = "regulator-fixed";
@@ -179,6 +193,7 @@
 		vin-supply = <&vcc3v3_sys>;
 	};
 	
+
     	wireless_wlan {
         	compatible = "wlan-platdata";    
         	wifi_chip_type = "rtl8723du";
@@ -385,6 +400,7 @@
 		vcc9-supply = <&vcc3v3_sys>;
 		wakeup-source;
 		long-press-off-time-sec = <10>;
+
 
 		regulators {
 			vdd_logic: DCDC_REG1 {
@@ -626,6 +642,13 @@
 	};
 };
 
+&mdio1 {
+	rgmii_phy1: phy@1 {
+		compatible = "ethernet-phy-ieee802.3-c22";
+		reg = <0x1>;
+	};
+};
+
 &gmac0 {
 	phy-mode = "rgmii";
 	clock_in_out = "input";
@@ -652,14 +675,41 @@
 	phy-supply = <&vcc_phy>;
 	status = "okay";	
 };
+
+&gmac1 {
+	phy-mode = "rgmii";
+	clock_in_out = "input";
+
+	snps,reset-gpio = <&gpio3 RK_PA6 GPIO_ACTIVE_LOW>;
+	snps,reset-active-low;
+	
+	snps,reset-delays-us = <0 20000 100000>;
+
+	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
+	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
+	assigned-clock-rates = <0>, <125000000>;
+	
+	pinctrl-names = "default";
+	pinctrl-0 = <&gmac1m1_miim
+		     &gmac1m1_tx_bus2
+		     &gmac1m1_rx_bus2
+		     &gmac1m1_rgmii_clk
+		     &gmac1m1_rgmii_bus>;
+
+	tx_delay = <0x3d>;
+	rx_delay = <0x23>;
+
+	phy-handle = <&rgmii_phy1>;
+	phy-supply = <&vcc_phy>;
+	status = "disabled";
+};
 	
 &pcie2x1 {
 	num-lanes = <1>;
 	num-viewport = <4>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pcie20m1_pins>;
-	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&vcc3v3_sys>;
+	pinctrl-0 = <&asm1064_rst>;
+	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;	
+	vpcie3v3-supply = <&vcc5v0_sys>;
 	status = "okay";
 };
 
@@ -673,6 +723,14 @@
 	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc3v3_sys>;
 	status = "okay";
+};
+
+&sata0 {
+	status = "okay";
+};
+
+&sata1 {
+    	status = "disabled";
 };
 
 &saradc {
@@ -781,6 +839,15 @@
 	usb {
 		vcc5v0_otg_en: vcc5v0-otg-en {
 			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+	
+	sata {
+		vcc12V_sata_enable_h: vcc12V_sata_enable_h {
+			rockchip,pins = <3 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+		asm1064_rst: asm1064_rst {
+			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
