@@ -403,6 +403,11 @@
 		wakeup-source;
 		long-press-off-time-sec = <10>;
 
+		rk809_pwrkey: pwrkey {
+			compatible = "rockchip,rk809-pwrkey";
+			status = "okay";
+			};
+
 		regulators {
 			vdd_logic: DCDC_REG1 {
 				regulator-always-on;
