@@ -809,6 +809,8 @@
 };
 
 &pwm0 {
+	pinctrl-0 = <&pwm0m1_pins>;
+	pinctrl-names = "default";
 	status = "okay";
 };
 
