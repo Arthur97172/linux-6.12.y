@@ -192,9 +192,8 @@
 		regulator-max-microvolt = <900000>;
 		vin-supply = <&vcc3v3_sys>;
 	};
-	
 
-    	wireless_wlan {
+	wireless_wlan {
         	compatible = "wlan-platdata";    
         	wifi_chip_type = "rtl8723du";
         	rockchip,grf = <&grf>;
