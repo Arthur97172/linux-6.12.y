@@ -18,7 +18,7 @@
 #include "rk3568-ramoops.dtsi"
 
 / {
-    	model = "H500";
+	model = "H500";
 	compatible = "h500", "rockchip,rk3568";
 	bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0";
 
@@ -401,7 +401,6 @@
 		wakeup-source;
 		long-press-off-time-sec = <10>;
 
-
 		regulators {
 			vdd_logic: DCDC_REG1 {
 				regulator-always-on;
@@ -615,8 +614,7 @@
 		compatible = "nxp,pcf8563";
 		reg = <0x51>;
 		#clock-cells = <0>;
-	};
-	
+	};	
 };
 
 &uart2 {
@@ -651,26 +649,21 @@
 
 &gmac0 {
 	phy-mode = "rgmii";
-	clock_in_out = "input";
-	
+	clock_in_out = "input";	
 	snps,reset-gpio = <&gpio3 RK_PA7 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
 	snps,reset-delays-us = <0 20000 100000>;
-
 	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>, <&cru SCLK_GMAC0>;
 	assigned-clock-parents = <&cru SCLK_GMAC0_RGMII_SPEED>, <&cru CLK_MAC0_2TOP>;
 	assigned-clock-rates = <0>, <125000000>;
-
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac0_miim
 		     &gmac0_tx_bus2
 		     &gmac0_rx_bus2
 		     &gmac0_rgmii_clk
 		     &gmac0_rgmii_bus>;
-
 	tx_delay = <0x2e>;
 	rx_delay = <0x2a>;
-
 	phy-handle = <&rgmii_phy0>;
 	phy-supply = <&vcc_phy>;
 	status = "okay";	
@@ -679,16 +672,12 @@
 &gmac1 {
 	phy-mode = "rgmii";
 	clock_in_out = "input";
-
 	snps,reset-gpio = <&gpio3 RK_PA6 GPIO_ACTIVE_LOW>;
-	snps,reset-active-low;
-	
+	snps,reset-active-low;	
 	snps,reset-delays-us = <0 20000 100000>;
-
 	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
 	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
-	assigned-clock-rates = <0>, <125000000>;
-	
+	assigned-clock-rates = <0>, <125000000>;	
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac1m1_miim
 		     &gmac1m1_tx_bus2
@@ -698,7 +687,6 @@
 
 	tx_delay = <0x3d>;
 	rx_delay = <0x23>;
-
 	phy-handle = <&rgmii_phy1>;
 	phy-supply = <&vcc_phy>;
 	status = "disabled";
