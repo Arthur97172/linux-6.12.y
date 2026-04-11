@@ -812,6 +812,10 @@
 	status = "okay";
 };
 
+&pwm3 {
+	status = "okay";
+};
+
 &pwm7 {
 	status = "okay";
 };
