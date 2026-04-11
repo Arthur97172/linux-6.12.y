@@ -217,6 +217,9 @@
 		led-user1 {
 			label = "green:user1";
 			gpios = <&gpio3 RK_PB5 GPIO_ACTIVE_LOW>;
+			function = "heartbeat"; 
+			color = <LED_COLOR_ID_GREEN>;
+			default-state = "on";
 			linux,default-trigger = "heartbeat";
 		};
 
