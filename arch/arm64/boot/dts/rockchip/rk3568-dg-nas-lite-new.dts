@@ -13,10 +13,13 @@
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/soc/rockchip,vop2.h>
 #include "rk3568.dtsi"
+#include "rk3568-ip.dtsi"
+#include "rk3568-ip-rk809.dtsi"
+#include "rk3568-ramoops.dtsi"
 
 / {
-    	model = "DG NAS LITE";
-	compatible = "dg,nas-lite", "rockchip,rk3568";
+	model = "H500";
+	compatible = "h500", "rockchip,rk3568";
 	bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0";
 
 	aliases {
@@ -136,11 +139,7 @@
 		regulator-always-on;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-//		enable-active-high;
-//		gpio = <&gpio0 RK_PD4 GPIO_ACTIVE_HIGH>;
 		vin-supply = <&vcc5v0_sys>;
-//		pinctrl-names = "default";
-//		pinctrl-0 = <&vcc5v0_host_en>;
 	};
 
 	vcc5v0_otg: vcc5v0-otg-regulator {
@@ -193,9 +192,8 @@
 		regulator-max-microvolt = <900000>;
 		vin-supply = <&vcc3v3_sys>;
 	};
-	
 
-    	wireless_wlan {
+	wireless_wlan {
         	compatible = "wlan-platdata";    
         	wifi_chip_type = "rtl8723du";
         	rockchip,grf = <&grf>;
@@ -208,7 +206,6 @@
 		compatible = "bluetooth-platdata";
 		clocks = <&rk809 1>;
 		clock-names = "ext_clock";
-		//wifi-bt-power-toggle;
 		status = "okay";
 	};	
 
@@ -254,9 +251,6 @@
 		#cooling-cells = <2>;
 		pwms = <&pwm0 0 40000 0>;
 		fan-supply = <&dc_12v>;
-		//interrupt-parent = <&gpio0>;
-		//interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
-		//pulses-per-revolution = <2>;
 		cooling-levels = <0 50 100 150 200 255>;
 	};
 };
@@ -403,6 +397,8 @@
 		vcc7-supply = <&vcc3v3_sys>;
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
+		wakeup-source;
+		long-press-off-time-sec = <10>;
 
 		regulators {
 			vdd_logic: DCDC_REG1 {
@@ -617,8 +613,7 @@
 		compatible = "nxp,pcf8563";
 		reg = <0x51>;
 		#clock-cells = <0>;
-	};
-	
+	};	
 };
 
 &uart2 {
@@ -653,28 +648,21 @@
 
 &gmac0 {
 	phy-mode = "rgmii";
-	//clock_in_out = "output";
-	clock_in_out = "input";
-	
+	clock_in_out = "input";	
 	snps,reset-gpio = <&gpio3 RK_PA7 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
-	/* Reset time is 20ms, 100ms for rtl8211f */
 	snps,reset-delays-us = <0 20000 100000>;
-
 	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>, <&cru SCLK_GMAC0>;
 	assigned-clock-parents = <&cru SCLK_GMAC0_RGMII_SPEED>, <&cru CLK_MAC0_2TOP>;
 	assigned-clock-rates = <0>, <125000000>;
-
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac0_miim
 		     &gmac0_tx_bus2
 		     &gmac0_rx_bus2
 		     &gmac0_rgmii_clk
 		     &gmac0_rgmii_bus>;
-
 	tx_delay = <0x2e>;
 	rx_delay = <0x2a>;
-
 	phy-handle = <&rgmii_phy0>;
 	phy-supply = <&vcc_phy>;
 	status = "okay";	
@@ -682,18 +670,13 @@
 
 &gmac1 {
 	phy-mode = "rgmii";
-	//clock_in_out = "output";
 	clock_in_out = "input";
-
 	snps,reset-gpio = <&gpio3 RK_PA6 GPIO_ACTIVE_LOW>;
-	snps,reset-active-low;
-	
+	snps,reset-active-low;	
 	snps,reset-delays-us = <0 20000 100000>;
-
 	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
 	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
-	assigned-clock-rates = <0>, <125000000>;
-	
+	assigned-clock-rates = <0>, <125000000>;	
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac1m1_miim
 		     &gmac1m1_tx_bus2
@@ -703,7 +686,6 @@
 
 	tx_delay = <0x3d>;
 	rx_delay = <0x23>;
-
 	phy-handle = <&rgmii_phy1>;
 	phy-supply = <&vcc_phy>;
 	status = "disabled";
@@ -713,6 +695,7 @@
 	num-lanes = <1>;
 	num-viewport = <4>;
 	pinctrl-0 = <&asm1064_rst>;
+	reset-deassert-ms = <500>;
 	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;	
 	vpcie3v3-supply = <&vcc5v0_sys>;
 	status = "okay";
@@ -735,7 +718,7 @@
 };
 
 &sata1 {
-    	status = "disabled";
+	status = "disabled";
 };
 
 &saradc {
@@ -764,6 +747,13 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
 	status = "okay";
+};
+
+&adc_keys {
+	vol-up-key {
+		label = "recovery";
+		linux,code = <KEY_RESTART>;
+	};
 };
 
 &sfc {
@@ -802,7 +792,6 @@
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&spi3m1_cs0 &spi3m1_pins>;
-//	pinctrl-1 = <&spi3m1_cs0 &spi3m1_pins_hs>;
 	st7789v@0 {
 			status = "okay";
             compatible = "sitronix,st7789v";
@@ -820,6 +809,10 @@
 };
 
 &pwm0 {
+	status = "okay";
+};
+
+&pwm3 {
 	status = "okay";
 };
 
@@ -966,4 +959,12 @@
 
 &usb_host1_xhci {
 	status = "okay";
+};
+
+/ {
+	/delete-node/ video-codec@fdea0400;
+};
+
+/ {
+	/delete-node/ rga@fdeb0000;
 };
