@@ -719,7 +719,7 @@
 };
 
 &sata1 {
-    	status = "disabled";
+	status = "disabled";
 };
 
 &saradc {
