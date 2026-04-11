@@ -707,6 +707,13 @@
 	status = "okay";
 };
 
+&rk809 {
+    pwrkey {
+        compatible = "rockchip,rk809-pwrkey";
+        status = "okay";
+    };
+};
+
 &adc_keys {
 	vol-up-key {
 		label = "recovery";
