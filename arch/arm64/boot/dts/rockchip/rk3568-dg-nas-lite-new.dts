@@ -746,27 +746,6 @@
 	};	
 };
 
-&spi3 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&spi3m1_cs0 &spi3m1_pins>;
-
-	st7789v@0 {
-		status = "okay";
-		compatible = "sitronix,st7789v";
-		reg = <0>;
-		spi-max-frequency = <12000000>;           
-		bgr;
-		fps = <30>;
-		rotate = <90>;
-		buswidth = <8>; 
-		dc-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;  
-		reset-gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>; 
-		led-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_LOW>;           
-		debug = <0>; 
-       };
-};
-
 &pwm0 {
 	pinctrl-0 = <&pwm0m1_pins>;
 	pinctrl-names = "default";
