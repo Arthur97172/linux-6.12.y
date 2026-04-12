@@ -212,26 +212,14 @@
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
-		pinctrl-0 = <&led_user_1>, <&led_user_2>, <&led_sata_0>;
+		pinctrl-0 = <&led_system_work>;
 
-		led-user1 {
-			label = "green:user1";
-			gpios = <&gpio3 RK_PB5 GPIO_ACTIVE_LOW>;
-			function = "heartbeat"; 
-			color = <LED_COLOR_ID_GREEN>;
+		led-system {
+			label = "red:system";
+			gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_LOW>;
 			default-state = "on";
 			linux,default-trigger = "heartbeat";
-		};
-
-		led-user2 {
-			label = "blue:user2";
-			gpios = <&gpio3 RK_PB1 GPIO_ACTIVE_LOW>;
-		};
-
-		led-sata0 {
-			label = "green:sata0";
-			gpios = <&gpio3 RK_PA2 GPIO_ACTIVE_LOW>;
-		};
+		};	
 	};
 
 	rk809_sound: rk809-sound {
@@ -780,17 +768,9 @@
 	};
 
 	leds {
-		led_user_1: led_user_1 {
-			rockchip,pins = <3 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-
-		led_user_2: led_user_2 {
-			rockchip,pins = <3 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-
-		led_sata_0: led_sata_0 {
-			rockchip,pins = <3 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
+		led_system_work: led-system-work {
+			rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};		
 	};
 
 	spi1 {
