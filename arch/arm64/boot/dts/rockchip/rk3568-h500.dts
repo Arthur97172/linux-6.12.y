@@ -788,9 +788,9 @@
 	};
 
 	fan-fg {
-        	fg_pin: fg-pin {
-            		rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_up>;
-        	};
+		fg_pin: fg-pin {
+			rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
 	};
 
 	pcie {
