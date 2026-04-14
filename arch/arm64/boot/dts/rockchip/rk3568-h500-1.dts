@@ -348,13 +348,14 @@
 &i2c0 {
 	status = "okay";
 
-	vdd_cpu: regulator@1c {
-		compatible = "tcs,tcs4525";
+	vdd_cpu: syr827@40 {
+		compatible = "silergy,syr827";
 		reg = <0x1c>;
 		fcs,suspend-voltage-selector = <1>;
 		regulator-name = "vdd_cpu";
 		regulator-min-microvolt = <712500>;
 		regulator-max-microvolt = <1390000>;
+		regulator-init-microvolt = <900000>;
 		regulator-ramp-delay = <2300>;
 		regulator-always-on;
 		regulator-boot-on;
@@ -375,10 +376,22 @@
 		#clock-cells = <1>;
 		clock-names = "mclk";
 		clocks = <&cru I2S1_MCLKOUT_TX>;
-		pinctrl-names = "default";
+		pinctrl-names = "default", "pmic-sleep",
+				"pmic-power-off", "pmic-reset";
 		pinctrl-0 = <&pmic_int>;
+		pinctrl-1 = <&soc_slppin_slp>, <&rk817_slppin_slp>;
+		pinctrl-2 = <&soc_slppin_gpio>, <&rk817_slppin_pwrdn>;
+		pinctrl-3 = <&soc_slppin_gpio>, <&rk817_slppin_rst>;
+
 		system-power-controller;
-		#sound-dai-cells = <0>;
+		wakeup-source;
+		#clock-cells = <1>;
+		clock-output-names = "rk808-clkout1", "rk808-clkout2";
+		//fb-inner-reg-idxs = <2>;
+		/* 1: rst regs (default in codes), 0: rst the pmic */
+		pmic-reset-func = <0>;
+		/* not save the PMIC_POWER_EN register in uboot */
+		not-save-power-en = <1>;
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
 		vcc3-supply = <&vcc3v3_sys>;
@@ -388,8 +401,35 @@
 		vcc7-supply = <&vcc3v3_sys>;
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
-		wakeup-source;
 		long-press-off-time-sec = <10>;
+		pwrkey {
+			status = "okay";
+		};
+
+		pinctrl_rk8xx: pinctrl_rk8xx {
+			gpio-controller;
+			#gpio-cells = <2>;
+
+			rk817_slppin_null: rk817_slppin_null {
+				pins = "gpio_slp";
+				function = "pin_fun0";
+			};
+
+			rk817_slppin_slp: rk817_slppin_slp {
+				pins = "gpio_slp";
+				function = "pin_fun1";
+			};
+
+			rk817_slppin_pwrdn: rk817_slppin_pwrdn {
+				pins = "gpio_slp";
+				function = "pin_fun2";
+			};
+
+			rk817_slppin_rst: rk817_slppin_rst {
+				pins = "gpio_slp";
+				function = "pin_fun3";
+			};
+		};
 
 		regulators {
 			vdd_logic: DCDC_REG1 {
@@ -578,7 +618,18 @@
 
 		rk809_codec: codec {
 			#sound-dai-cells = <0>;
+			compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
+			clocks = <&cru I2S1_MCLKOUT>;
+			clock-names = "mclk";
+			assigned-clocks = <&cru I2S1_MCLKOUT>, <&cru I2S1_MCLK_TX_IOE>;
+			assigned-clock-rates = <12288000>;
+			assigned-clock-parents = <&cru I2S1_MCLKOUT_TX>, <&cru I2S1_MCLKOUT_TX>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&i2s1m0_mclk>;
+			hp-volume = <20>;
+			spk-volume = <3>;
 			mic-in-differential;
+			status = "okay";
 		};
 	};
 };
@@ -700,13 +751,6 @@
 	status = "okay";
 };
 
-&adc_keys {
-	vol-up-key {
-		label = "recovery";
-		linux,code = <KEY_RESTART>;
-	};
-};
-
 &sfc {
 	status = "okay";
 };
@@ -750,10 +794,31 @@
 };
 
 &pinctrl {
+	wifi {
+		wifi_enable_h: wifi-enable-h {
+			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};	
+
 	pmic {
 		pmic_int: pmic_int {
 			rockchip,pins =
 				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+
+		soc_slppin_gpio: soc_slppin_gpio {
+			rockchip,pins =
+				<0 RK_PA2 RK_FUNC_GPIO &pcfg_output_low_pull_down>;
+		};
+
+		soc_slppin_slp: soc_slppin_slp {
+			rockchip,pins =
+				<0 RK_PA2 1 &pcfg_pull_up>;
+		};
+
+		soc_slppin_rst: soc_slppin_rst {
+			rockchip,pins =
+				<0 RK_PA2 2 &pcfg_pull_none>;
 		};
 	};
 
@@ -784,7 +849,6 @@
 			rockchip,pins =
 				<3 RK_PC1 3 &pcfg_pull_none>;
 		};	
-
 	};
 
 	fan-fg {
