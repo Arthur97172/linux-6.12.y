@@ -668,7 +668,7 @@
 
 &pcie3x2 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pcie_reset_h>;
+	pinctrl-0 = <&pcie30x2m1_pins>;
 	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&sata_en>;
 	max-link-speed = <3>;
@@ -797,7 +797,32 @@
 		pcie_reset_h: pcie-reset-h {
 			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
-	};	
+	};
+
+	pcie20 {
+		/omit-if-no-ref/
+		pcie20m0_pins: pcie20m0-pins {
+			rockchip,pins = <0 RK_PA5 3 &pcfg_pull_none>,
+			                <0 RK_PB6 3 &pcfg_pull_none>,
+			                <0 RK_PB5 3 &pcfg_pull_none>;
+		};
+	};
+
+	pcie30x2 {
+		/omit-if-no-ref/
+		pcie30x2m0_pins: pcie30x2m0-pins {
+			rockchip,pins = <0 RK_PA6 2 &pcfg_pull_none>,
+			                <0 RK_PD0 3 &pcfg_pull_none>,
+			                <0 RK_PC7 3 &pcfg_pull_none>;
+		};
+
+		/omit-if-no-ref/
+		pcie30x2m1_pins: pcie30x2m1-pins {
+			rockchip,pins = <2 RK_PD4 4 &pcfg_pull_none>,
+			                <2 RK_PD6 4 &pcfg_pull_none>,
+			                <2 RK_PD5 4 &pcfg_pull_none>;
+		};
+	};
 };
 
 &vepu {
