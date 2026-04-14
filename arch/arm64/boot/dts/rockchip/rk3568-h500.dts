@@ -799,9 +799,9 @@
 
 &pinctrl {
 
-	wifi {
-		wifi_enable_h: wifi-enable-h {
-			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
+	wireless-wlan {
+		wifi_host_wake_irq: wifi-host-wake-irq {
+			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};	
 
