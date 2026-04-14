@@ -700,13 +700,6 @@
 	status = "okay";
 };
 
-&adc_keys {
-	vol-up-key {
-		label = "recovery";
-		linux,code = <KEY_RESTART>;
-	};
-};
-
 &sfc {
 	status = "okay";
 };
@@ -784,7 +777,6 @@
 			rockchip,pins =
 				<3 RK_PC1 3 &pcfg_pull_none>;
 		};	
-
 	};
 
 	fan-fg {
