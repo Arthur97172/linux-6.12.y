@@ -193,7 +193,7 @@
 		vin-supply = <&vcc3v3_sys>;
 	};
 
-	wireless_wlan {
+	wireless_wlan: wireless-wlan {
         	compatible = "wlan-platdata";    
         	wifi_chip_type = "rtl8723du";
         	rockchip,grf = <&grf>;
@@ -727,6 +727,14 @@
 &saradc {
 	status = "okay";
 	vref-supply = <&vcca_1v8>;
+};
+
+&wireless_wlan {
+	pinctrl-names = "default";
+	pinctrl-0 = <&wifi_host_wake_irq>;
+	WIFI,host_wake_irq = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
+	wifi_chip_type = "rtl8723du";
+	status = "okay";
 };
 
 &sdhci {
