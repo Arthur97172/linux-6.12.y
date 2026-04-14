@@ -719,7 +719,7 @@
 
 &pcie3x2 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pcie30x2m1_pins>;
+	pinctrl-0 = <&pcie30x2m0_pins &pcie30x2m1_pins>;
 	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&sata_en>;
 	max-link-speed = <3>;
