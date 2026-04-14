@@ -671,9 +671,9 @@
 	pinctrl-0 = <&pcie_reset_h>;
 	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&sata_en>;
-	max-link-speed = <2>;
-	num-lanes = <1>;
-	reset-deassert-ms = <200>;	
+	max-link-speed = <3>;
+	num-lanes = <2>;
+	aspm-no-l0s;	
 	status = "okay";
 };
 
@@ -788,9 +788,9 @@
 	};
 
 	fan-fg {
-        	fg_pin: fg-pin {
-            		rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_up>;
-        	};
+		fg_pin: fg-pin {
+			rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
 	};
 
 	pcie {
