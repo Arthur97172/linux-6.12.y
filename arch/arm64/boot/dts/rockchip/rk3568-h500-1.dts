@@ -755,6 +755,28 @@
 	status = "okay";
 };
 
+&dfi {
+	status = "okay";
+};
+
+&its {
+	status = "okay";
+};
+
+&nandc0 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+
+	nand@0 {
+		reg = <0>;
+		nand-bus-width = <8>;
+		nand-ecc-mode = "hw";
+		nand-ecc-strength = <16>;
+		nand-ecc-step-size = <1024>;
+	};
+};
+
 &tsadc {
 	status = "okay";
 };
