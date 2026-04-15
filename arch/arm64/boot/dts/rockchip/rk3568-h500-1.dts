@@ -193,7 +193,7 @@
 		vin-supply = <&vcc3v3_sys>;
 	};
 
-	wireless_wlan {
+	wireless_wlan: wireless-wlan {
         	compatible = "wlan-platdata";    
         	wifi_chip_type = "rtl8723du";
         	rockchip,grf = <&grf>;
@@ -210,16 +210,30 @@
 	};	
 
 	leds {
-		compatible = "gpio-leds";
-		pinctrl-names = "default";
-		pinctrl-0 = <&led_system_work>;
+        compatible = "gpio-leds";
+        pinctrl-names = "default";
+        
+        pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin>;
+        status = "okay";
 
-		led-system {
-			label = "red:system";
-			gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_LOW>;
-			default-state = "on";
-			linux,default-trigger = "heartbeat";
-		};	
+        heartbeat {
+            label = "heartbeat";
+            gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_HIGH>;
+            default-state = "on";
+            linux,default-trigger = "heartbeat";
+        };
+
+        wifi_pwr {
+            label = "wifi_pwr";
+            gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
+            default-state = "on";
+        };
+
+        pcie_pwr {
+            label = "pcie_pwr";
+            gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
+            default-state = "on";
+        };
 	};
 
 	rk809_sound: rk809-sound {
@@ -348,14 +362,13 @@
 &i2c0 {
 	status = "okay";
 
-	vdd_cpu: syr827@40 {
-		compatible = "silergy,syr827";
+	vdd_cpu: regulator@1c {
+		compatible = "tcs,tcs4525";
 		reg = <0x1c>;
 		fcs,suspend-voltage-selector = <1>;
 		regulator-name = "vdd_cpu";
 		regulator-min-microvolt = <712500>;
 		regulator-max-microvolt = <1390000>;
-		regulator-init-microvolt = <900000>;
 		regulator-ramp-delay = <2300>;
 		regulator-always-on;
 		regulator-boot-on;
@@ -376,22 +389,12 @@
 		#clock-cells = <1>;
 		clock-names = "mclk";
 		clocks = <&cru I2S1_MCLKOUT_TX>;
-		pinctrl-names = "default", "pmic-sleep",
-				"pmic-power-off", "pmic-reset";
+		pinctrl-names = "default", "sleep";
 		pinctrl-0 = <&pmic_int>;
 		pinctrl-1 = <&soc_slppin_slp>, <&rk817_slppin_slp>;
-		pinctrl-2 = <&soc_slppin_gpio>, <&rk817_slppin_pwrdn>;
-		pinctrl-3 = <&soc_slppin_gpio>, <&rk817_slppin_rst>;
-
-		system-power-controller;
-		wakeup-source;
-		#clock-cells = <1>;
 		clock-output-names = "rk808-clkout1", "rk808-clkout2";
-		//fb-inner-reg-idxs = <2>;
-		/* 1: rst regs (default in codes), 0: rst the pmic */
-		pmic-reset-func = <0>;
-		/* not save the PMIC_POWER_EN register in uboot */
-		not-save-power-en = <1>;
+		system-power-controller;
+		#sound-dai-cells = <0>;
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
 		vcc3-supply = <&vcc3v3_sys>;
@@ -401,7 +404,9 @@
 		vcc7-supply = <&vcc3v3_sys>;
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
+		wakeup-source;
 		long-press-off-time-sec = <10>;
+
 		pwrkey {
 			status = "okay";
 		};
@@ -618,12 +623,9 @@
 
 		rk809_codec: codec {
 			#sound-dai-cells = <0>;
-			compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
-			clocks = <&cru I2S1_MCLKOUT>;
+			compatible = "rockchip,rk817-codec";
 			clock-names = "mclk";
-			assigned-clocks = <&cru I2S1_MCLKOUT>, <&cru I2S1_MCLK_TX_IOE>;
 			assigned-clock-rates = <12288000>;
-			assigned-clock-parents = <&cru I2S1_MCLKOUT_TX>, <&cru I2S1_MCLKOUT_TX>;
 			pinctrl-names = "default";
 			pinctrl-0 = <&i2s1m0_mclk>;
 			hp-volume = <20>;
@@ -719,12 +721,8 @@
 
 &pcie3x2 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pcie30x2m0_pins &pcie30x2m1_pins>;
 	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&sata_en>;
-	max-link-speed = <3>;
-	num-lanes = <2>;
-	aspm-no-l0s;	
 	status = "okay";
 };
 
@@ -739,6 +737,14 @@
 &saradc {
 	status = "okay";
 	vref-supply = <&vcca_1v8>;
+};
+
+&wireless_wlan {
+	pinctrl-names = "default";
+	pinctrl-0 = <&wifi_host_wake_irq>;
+	WIFI,host_wake_irq = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
+	wifi_chip_type = "rtl8723du";
+	status = "okay";
 };
 
 &sdhci {
@@ -761,20 +767,6 @@
 
 &its {
 	status = "okay";
-};
-
-&nandc0 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	status = "okay";
-
-	nand@0 {
-		reg = <0>;
-		nand-bus-width = <8>;
-		nand-ecc-mode = "hw";
-		nand-ecc-strength = <16>;
-		nand-ecc-step-size = <1024>;
-	};
 };
 
 &tsadc {
@@ -816,9 +808,10 @@
 };
 
 &pinctrl {
-	wifi {
-		wifi_enable_h: wifi-enable-h {
-			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
+
+	wireless-wlan {
+		wifi_host_wake_irq: wifi-host-wake-irq {
+			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};	
 
@@ -830,7 +823,7 @@
 
 		soc_slppin_gpio: soc_slppin_gpio {
 			rockchip,pins =
-				<0 RK_PA2 RK_FUNC_GPIO &pcfg_output_low_pull_down>;
+				<0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_down>;
 		};
 
 		soc_slppin_slp: soc_slppin_slp {
@@ -842,7 +835,7 @@
 			rockchip,pins =
 				<0 RK_PA2 2 &pcfg_pull_none>;
 		};
-	};
+	};	
 
 	usb {
 		vcc5v0_otg_en: vcc5v0-otg-en {
@@ -858,12 +851,20 @@
 			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
+	
+	gpio-leds {
+        heartbeat_pin: heartbeat-pin {
+            rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
 
-	leds {
-		led_system_work: led-system-work {
-			rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
-		};		
-	};
+        wifi_pwr_pin: wifi-pwr-pin {
+            rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
+
+        pcie_pwr_pin: pcie-pwr-pin {
+            rockchip,pins = <4 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
+    };
 
 	spi1 {
 		/omit-if-no-ref/
@@ -883,32 +884,7 @@
 		pcie_reset_h: pcie-reset-h {
 			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
-	};
-
-	pcie20 {
-		/omit-if-no-ref/
-		pcie20m0_pins: pcie20m0-pins {
-			rockchip,pins = <0 RK_PA5 3 &pcfg_pull_none>,
-			                <0 RK_PB6 3 &pcfg_pull_none>,
-			                <0 RK_PB5 3 &pcfg_pull_none>;
-		};
-	};
-
-	pcie30x2 {
-		/omit-if-no-ref/
-		pcie30x2m0_pins: pcie30x2m0-pins {
-			rockchip,pins = <0 RK_PA6 2 &pcfg_pull_none>,
-			                <0 RK_PD0 3 &pcfg_pull_none>,
-			                <0 RK_PC7 3 &pcfg_pull_none>;
-		};
-
-		/omit-if-no-ref/
-		pcie30x2m1_pins: pcie30x2m1-pins {
-			rockchip,pins = <2 RK_PD4 4 &pcfg_pull_none>,
-			                <2 RK_PD6 4 &pcfg_pull_none>,
-			                <2 RK_PD5 4 &pcfg_pull_none>;
-		};
-	};
+	};	
 };
 
 &vepu {
