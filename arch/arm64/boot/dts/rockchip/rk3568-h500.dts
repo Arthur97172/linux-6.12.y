@@ -210,16 +210,30 @@
 	};	
 
 	leds {
-		compatible = "gpio-leds";
-		pinctrl-names = "default";
-		pinctrl-0 = <&led_system_work>;
+        compatible = "gpio-leds";
+        pinctrl-names = "default";
+        
+        pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin>;
+        status = "okay";
 
-		led-system {
-			label = "red:system";
-			gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_LOW>;
-			default-state = "on";
-			linux,default-trigger = "heartbeat";
-		};	
+        heartbeat {
+            label = "heartbeat";
+            gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_HIGH>;
+            default-state = "on";
+            linux,default-trigger = "heartbeat";
+        };
+
+        wifi_pwr {
+            label = "wifi_pwr";
+            gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
+            default-state = "on";
+        };
+
+        pcie_pwr {
+            label = "pcie_pwr";
+            gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
+            default-state = "on";
+        };
 	};
 
 	rk809_sound: rk809-sound {
@@ -260,13 +274,6 @@
 
 &cpu3 {
 	cpu-supply = <&vdd_cpu>;
-};
-
-&dmc {
-	center-supply = <&vdd_logic>;
-	status = "okay";
-	system-status-level = <SYS_STATUS_NORMAL DMC_FREQ_LEVEL_MID_HIGH>;	
-	auto-freq-en = <0>;
 };
 
 &gpu {
@@ -322,24 +329,12 @@
 	status = "okay";
 };
 
-&combphy0_usq {
-    status = "okay";
-};
-
 &combphy1 { 
     	status = "okay"; 
 };
 
-&combphy1_usq {
-    status = "okay";
-};
-
 &combphy2 {
 	status = "okay";
-};
-
-&combphy2_psq {
-    status = "okay";
 };
 
 &hdmi {
@@ -856,12 +851,20 @@
 			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
+	
+	gpio-leds {
+        heartbeat_pin: heartbeat-pin {
+            rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
 
-	leds {
-		led_system_work: led-system-work {
-			rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
-		};		
-	};
+        wifi_pwr_pin: wifi-pwr-pin {
+            rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
+
+        pcie_pwr_pin: pcie-pwr-pin {
+            rockchip,pins = <4 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
+    };
 
 	spi1 {
 		/omit-if-no-ref/
