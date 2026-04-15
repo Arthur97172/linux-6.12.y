@@ -262,6 +262,13 @@
 	cpu-supply = <&vdd_cpu>;
 };
 
+&dmc {
+	center-supply = <&vdd_logic>;
+	status = "okay";
+	system-status-level = <SYS_STATUS_NORMAL DMC_FREQ_LEVEL_MID_HIGH>;	
+	auto-freq-en = <0>;
+};
+
 &gpu {
 	mali-supply = <&vdd_gpu>;
 	status = "okay";
