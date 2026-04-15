@@ -210,30 +210,29 @@
 	};	
 
 	leds {
-        compatible = "gpio-leds";
-        pinctrl-names = "default";
-        
-        pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin>;
-        status = "okay";
+		compatible = "gpio-leds";
+		pinctrl-names = "default";    
+		pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin>;
+		status = "okay";
 
-        heartbeat {
-            label = "heartbeat";
-            gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_HIGH>;
-            default-state = "on";
-            linux,default-trigger = "heartbeat";
-        };
+		heartbeat {
+			label = "heartbeat";
+			gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+			linux,default-trigger = "heartbeat";
+		};
 
-        wifi_pwr {
-            label = "wifi_pwr";
-            gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
-            default-state = "on";
-        };
+		wifi_pwr {
+			label = "wifi_pwr";
+			gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
 
-        pcie_pwr {
-            label = "pcie_pwr";
-            gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
-            default-state = "on";
-        };
+		pcie_pwr {
+			label = "pcie_pwr";
+			gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
 	};
 
 	rk809_sound: rk809-sound {
