@@ -853,16 +853,16 @@
 	};
 	
 	gpio-leds {
-        heartbeat_pin: heartbeat-pin {
-            rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
+		heartbeat_pin: heartbeat-pin {
+			rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
         };
 
-        wifi_pwr_pin: wifi-pwr-pin {
-            rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
+		wifi_pwr_pin: wifi-pwr-pin {
+			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
         };
 
-        pcie_pwr_pin: pcie-pwr-pin {
-            rockchip,pins = <4 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
+		pcie_pwr_pin: pcie-pwr-pin {
+			rockchip,pins = <4 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
         };
     };
 
