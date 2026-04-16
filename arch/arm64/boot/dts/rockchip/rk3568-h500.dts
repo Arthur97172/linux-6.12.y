@@ -325,11 +325,11 @@
 };
 
 &combphy0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &combphy1 { 
-    	status = "okay"; 
+    	status = "disabled"; 
 };
 
 &combphy2 {
@@ -726,7 +726,7 @@
 };
 
 &sata0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &sata1 {
