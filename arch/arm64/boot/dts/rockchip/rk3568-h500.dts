@@ -325,7 +325,7 @@
 };
 
 &combphy0 {
-	status = "disabled";
+	status = "okay";
 };
 
 &combphy1 { 
