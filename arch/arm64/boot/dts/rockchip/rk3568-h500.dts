@@ -94,7 +94,7 @@
 		enable-active-high;
 		gpio = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc12V_sata_enable_h>;
+		pinctrl-0 = <&vcc12v_sata_enable_h>;
 		vin-supply = <&dc_12v>;
 	};
 
@@ -843,7 +843,7 @@
 	};
 	
 	sata {
-		vcc12V_sata_enable_h: vcc12V_sata_enable_h {
+		vcc12v_sata_enable_h: vcc12v_sata_enable_h {
 			rockchip,pins = <3 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 		asm1064_rst: asm1064_rst {
