@@ -108,9 +108,9 @@
 		vin-supply = <&dc_12v>;
 	};
 	
-	sata_en: sata_en {
+	nvme_en: nvme_en {
 		compatible = "regulator-fixed";
-		regulator-name = "sata_en";
+		regulator-name = "nvme_en";
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-min-microvolt = <3300000>;
@@ -119,7 +119,7 @@
 		gpio = <&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&asm1064_rst>;
-		vin-supply = <&dc_12v>;
+		vin-supply = <&vcc5v0_sys>;
 	};
 
 	vcc5v0_sys: vcc5v0-sys {
@@ -129,7 +129,7 @@
 		regulator-boot-on;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		vin-supply = <&vcc3v3_sys>;
+		vin-supply = <&dc_12v>;
 	};
 
 	vcc5v0_host: vcc5v0-host-regulator {
@@ -721,7 +721,7 @@
 &pcie3x2 {
 	pinctrl-names = "default";
 	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&sata_en>;
+	vpcie3v3-supply = <&nvme_en>;
 	status = "okay";
 };
 
