@@ -92,7 +92,9 @@
 		regulator-min-microvolt = <12000000>;
 		regulator-max-microvolt = <12000000>;
 		enable-active-high;
+		gpio = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
+		pinctrl-0 = <&vcc12v_sata_enable_h>;
 		vin-supply = <&dc_12v>;
 	};
 
@@ -106,9 +108,9 @@
 		vin-supply = <&dc_12v>;
 	};
 	
-	vcc3v3_pcie: vcc3v3-pcie {
+	vcc3v3_sata_en: vcc3v3-sata-en {
 		compatible = "regulator-fixed";
-		regulator-name = "sata_en";
+		regulator-name = "vcc3v3_sata_en";
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-min-microvolt = <3300000>;
@@ -116,7 +118,7 @@
 		enable-active-high;
 		gpio = <&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&pcie-reset-h>;
+		pinctrl-0 = <&asm1064_rst>;
 		vin-supply = <&dc_12v>;
 	};
 
@@ -127,7 +129,7 @@
 		regulator-boot-on;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		vin-supply = <&vcc3v3_sys>;
+		vin-supply = <&dc_12v>;
 	};
 
 	vcc5v0_host: vcc5v0-host-regulator {
@@ -208,30 +210,29 @@
 	};	
 
 	leds {
-        compatible = "gpio-leds";
-        pinctrl-names = "default";
-        
-        pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin>;
-        status = "okay";
+		compatible = "gpio-leds";
+		pinctrl-names = "default";    
+		pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin>;
+		status = "okay";
 
-        heartbeat {
-            label = "heartbeat";
-            gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_HIGH>;
-            default-state = "on";
-            linux,default-trigger = "heartbeat";
-        };
+		heartbeat {
+			label = "heartbeat";
+			gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+			linux,default-trigger = "heartbeat";
+		};
 
-        wifi_pwr {
-            label = "wifi_pwr";
-            gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
-            default-state = "on";
-        };
+		wifi_pwr {
+			label = "wifi_pwr";
+			gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
 
-        pcie_pwr {
-            label = "pcie_pwr";
-            gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
-            default-state = "on";
-        };
+		pcie_pwr {
+			label = "pcie_pwr";
+			gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
 	};
 
 	rk809_sound: rk809-sound {
@@ -328,7 +329,7 @@
 };
 
 &combphy1 { 
-    	status = "okay"; 
+	status = "okay";
 };
 
 &combphy2 {
@@ -387,12 +388,13 @@
 		#clock-cells = <1>;
 		clock-names = "mclk";
 		clocks = <&cru I2S1_MCLKOUT_TX>;
-		pinctrl-names = "default", "sleep";
+		pinctrl-names = "default", "pmic-sleep", "pmic-reset";
 		pinctrl-0 = <&pmic_int>;
 		pinctrl-1 = <&soc_slppin_slp>, <&rk817_slppin_slp>;
 		clock-output-names = "rk808-clkout1", "rk808-clkout2";
 		system-power-controller;
 		#sound-dai-cells = <0>;
+		not-save-power-en = <0x01>;
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
 		vcc3-supply = <&vcc3v3_sys>;
@@ -403,7 +405,6 @@
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
 		wakeup-source;
-		long-press-off-time-sec = <10>;
 
 		pwrkey {
 			status = "okay";
@@ -708,7 +709,7 @@
 	num-viewport = <4>;
 	pinctrl-0 = <&asm1064_rst>;
 	reset-deassert-ms = <500>;
-	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;	
+	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc5v0_sys>;
 	status = "okay";
 };
@@ -718,10 +719,15 @@
 };
 
 &pcie3x2 {
-	pinctrl-names = "default";
-	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&vcc3v3-pcie>;
-	status = "okay";
+	status = "disabled";
+};
+
+&sata0 {
+	status = "disabled";
+};
+
+&sata1 {
+	status = "disabled";
 };
 
 &saradc {
@@ -834,6 +840,9 @@
 	};
 	
 	sata {
+		vcc12v_sata_enable_h: vcc12v_sata_enable_h {
+			rockchip,pins = <3 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
 		asm1064_rst: asm1064_rst {
 			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
@@ -866,12 +875,6 @@
 			rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
-
-	pcie {
-		pcie_reset_h: pcie-reset-h {
-			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};	
 };
 
 &vepu {
