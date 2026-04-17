@@ -714,7 +714,6 @@
         &pcie20m0_pins
         &pcie30x2m0_pins
         &pcie30x2m1_pins
-        &asm1064_rst
     >;
 	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;
 	reset-deassert-ms = <1000>;
