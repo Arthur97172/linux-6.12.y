@@ -118,7 +118,6 @@
 		enable-active-high;
 		gpio = <&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&asm1064_rst>;
 		vin-supply = <&dc_12v>;
 	};
 
@@ -711,7 +710,12 @@
 	phys = <&pcie30phy 2>;
     phy-names = "pcie-phy";
 	pinctrl-names = "default";
-    pinctrl-0 = <&pcie30x2m0_pins>;
+        pinctrl-0 = <
+        &pcie20m0_pins
+        &pcie30x2m0_pins
+        &pcie30x2m1_pins
+        &asm1064_rst
+    >;
 	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;
 	reset-deassert-ms = <1000>;
 	vpcie3v3-supply = <&vcc3v3_sys>;
@@ -721,8 +725,6 @@
 &pcie30phy {
     status = "okay";
     rockchip,phy-mode = <PHY_TYPE_PCIE>;
-    assigned-clocks = <&cru CLK_PCIE30PHY_REF>;
-    assigned-clock-rates = <100000000>;
 };
 
 &pcie3x2 {
@@ -730,7 +732,7 @@
 };
 
 &sata0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &sata1 {
@@ -847,38 +849,42 @@
 	};
 
     sata {
-        sata-pins: sata-pins {
+        sata_pins: sata-pins {
             rockchip,pins =
                 <0 RK_PA4 RK_FUNC_2 &pcfg_pull_none>,
                 <0 RK_PA6 RK_FUNC_1 &pcfg_pull_none>,
                 <0 RK_PA5 RK_FUNC_2 &pcfg_pull_none>;
         };
 
-        vcc12V_sata_enable_h: vcc12v-sata-enable-h {
+        vcc12v_sata_enable_h: vcc12v-sata-enable-h {
             rockchip,pins =
                 <3 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none>;
         };
 
         asm1064_rst: asm1064-rst {
-            rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
+            rockchip,pins =
+                <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
         };
     };
-
+	
     sata0 {
         sata0_pins: sata0-pins {
-            rockchip,pins = <4 RK_PA6 RK_FUNC_3 &pcfg_pull_none>;
+            rockchip,pins =
+                <4 RK_PB6 RK_FUNC_3 &pcfg_pull_none>;
         };
     };
 
     sata1 {
         sata1_pins: sata1-pins {
-            rockchip,pins = <4 RK_PA5 RK_FUNC_3 &pcfg_pull_none>;
+            rockchip,pins =
+                <4 RK_PB5 RK_FUNC_3 &pcfg_pull_none>;
         };
     };
 
     sata2 {
         sata2_pins: sata2-pins {
-            rockchip,pins = <4 RK_PA4 RK_FUNC_3 &pcfg_pull_none>;
+            rockchip,pins =
+                <4 RK_PB4 RK_FUNC_3 &pcfg_pull_none>;
         };
     };
 	
@@ -917,10 +923,28 @@
                 <0 RK_PB6 RK_FUNC_3 &pcfg_pull_none>,
                 <0 RK_PB5 RK_FUNC_3 &pcfg_pull_none>;
         };
+
+        pcie20m1_pins: pcie20m1-pins {
+            rockchip,pins =
+                <2 RK_PB0 RK_FUNC_4 &pcfg_pull_none>,
+                <3 RK_PD1 RK_FUNC_4 &pcfg_pull_none>,
+                <2 RK_PB1 RK_FUNC_4 &pcfg_pull_none>;
+        };
+
+        pcie20m2_pins: pcie20m2-pins {
+            rockchip,pins =
+                <1 RK_PA0 RK_FUNC_4 &pcfg_pull_none>,
+                <1 RK_PA2 RK_FUNC_4 &pcfg_pull_none>,
+                <1 RK_PA1 RK_FUNC_4 &pcfg_pull_none>;
+        };
+
+        pcie20_buttonrstn: pcie20-buttonrstn {
+            rockchip,pins =
+                <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
     };
 
     pcie30x2 {
-
         pcie30x2m0_pins: pcie30x2m0-pins {
             rockchip,pins =
                 <0 RK_PA6 RK_FUNC_2 &pcfg_pull_none>,
@@ -933,6 +957,18 @@
                 <2 RK_PD4 RK_FUNC_4 &pcfg_pull_none>,
                 <2 RK_PD6 RK_FUNC_4 &pcfg_pull_none>,
                 <2 RK_PD5 RK_FUNC_4 &pcfg_pull_none>;
+        };
+
+        pcie30x2m2_pins: pcie30x2m2-pins {
+            rockchip,pins =
+                <4 RK_PB2 RK_FUNC_4 &pcfg_pull_none>,
+                <4 RK_PB4 RK_FUNC_4 &pcfg_pull_none>,
+                <4 RK_PB3 RK_FUNC_4 &pcfg_pull_none>;
+        };
+
+        pcie30x2_buttonrstn: pcie30x2-buttonrstn {
+            rockchip,pins =
+                <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
         };
     };
 };
