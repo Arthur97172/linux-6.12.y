@@ -212,7 +212,7 @@
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";    
-		pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin>;
+		pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin &led_green_pin &led_blue_pin>;
 		status = "okay";
 
 		heartbeat {
@@ -875,11 +875,11 @@
 			rockchip,pins = <4 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
         };
 		
-		led_green: led_green {
+		led_green_pin: led-green-pin {
 			rockchip,pins = <3 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		led_blue: led_blue {
+		led_blue_pin: led-blue-pin {
 			rockchip,pins = <3 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
