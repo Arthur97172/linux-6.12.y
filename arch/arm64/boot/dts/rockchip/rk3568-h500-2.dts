@@ -233,6 +233,20 @@
 			gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
 			default-state = "on";
 		};
+
+		led_green {
+			label = "led_green";
+			gpios = <&gpio3 RK_PB5 GPIO_ACTIVE_LOW>;
+			default-state = "on";
+			linux,default-trigger = "heartbeat";
+		};
+
+		led_blue {
+			label = "led_blue";
+			gpios = <&gpio3 RK_PB1 GPIO_ACTIVE_LOW>;
+			default-state = "on";
+			inux,default-trigger = "heartbeat";
+		};
 	};
 
 	rk809_sound: rk809-sound {
@@ -648,10 +662,6 @@
 	status = "okay";
 };
 
-&i2c4 {
-	status = "okay";
-};
-
 &i2c5 {
 	status = "okay";
 
@@ -713,8 +723,6 @@
 	num-viewport = <4>;
 	pinctrl-0 = <&asm1064_rst>;
 	reset-deassert-ms = <500>;
-	assigned-clocks = <&cru SCLK_PCIE20_SRC>, <&cru PLL_PPLL>;
-    	assigned-clock-rates = <100000000>, <200000000>;
 	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc5v0_sys>;
 	status = "okay";
@@ -813,19 +821,19 @@
 
 	wireless-wlan {
 		wifi_host_wake_irq: wifi-host-wake-irq {
-			rockchip,pins = <3 RK_PD4 0 &pcfg_pull_up>;
+			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};	
 
 	pmic {
 		pmic_int: pmic_int {
 			rockchip,pins =
-				<0 RK_PA3 0 &pcfg_pull_up>;
+				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 
 		soc_slppin_gpio: soc_slppin_gpio {
 			rockchip,pins =
-				<0 RK_PA2 0 &pcfg_pull_down>;
+				<0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_down>;
 		};
 
 		soc_slppin_slp: soc_slppin_slp {
@@ -841,32 +849,40 @@
 
 	usb {
 		vcc5v0_otg_en: vcc5v0-otg-en {
-			rockchip,pins = <0 RK_PA5 0 &pcfg_pull_none>;
+			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 	
 	sata {
 		vcc12v_sata_enable_h: vcc12v_sata_enable_h {
-			rockchip,pins = <3 RK_PA1 0 &pcfg_pull_none>;
+			rockchip,pins = <3 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 		asm1064_rst: asm1064_rst {
-			rockchip,pins = <3 RK_PA4 0 &pcfg_pull_none>;
+			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 	
 	gpio-leds {
 		heartbeat_pin: heartbeat-pin {
-			rockchip,pins = <3 RK_PD5 0 &pcfg_pull_none>;
+			rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
         };
 
 		wifi_pwr_pin: wifi-pwr-pin {
-			rockchip,pins = <3 RK_PD4 0 &pcfg_pull_none>;
+			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
         };
 
 		pcie_pwr_pin: pcie-pwr-pin {
-			rockchip,pins = <4 RK_PC4 0 &pcfg_pull_none>;
+			rockchip,pins = <4 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
         };
-    };
+		
+		led_green: led_green {
+			rockchip,pins = <3 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		led_blue: led_blue {
+			rockchip,pins = <3 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
 
 	spi1 {
 		/omit-if-no-ref/
@@ -878,7 +894,7 @@
 
 	fan-fg {
 		fg_pin: fg-pin {
-			rockchip,pins = <0 RK_PC4 0 &pcfg_pull_up>;
+			rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 };
