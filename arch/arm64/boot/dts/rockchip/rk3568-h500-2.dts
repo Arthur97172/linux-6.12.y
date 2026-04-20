@@ -407,12 +407,15 @@
 		#clock-cells = <1>;
 		clock-names = "mclk";
 		clocks = <&cru I2S1_MCLKOUT_TX>;
-		pinctrl-names = "default", "pmic-sleep", "pmic-reset";
+		pinctrl-names = "default", "pmic-sleep",  "pmic-power-off", "pmic-reset";
 		pinctrl-0 = <&pmic_int>;
-		pinctrl-1 = <&soc_slppin_slp>, <&rk817_slppin_slp>;
+		pinctrl-1 = <&soc_slppin_slp &rk817_slppin_slp>;
+		pinctrl-2 = <&soc_slppin_gpio $rk817_slppin_pwrdn>;
+		pinctrl-3 = <&soc_slppin_rst &rk817_slppin_rst>;
 		clock-output-names = "rk808-clkout1", "rk808-clkout2";
 		system-power-controller;
 		#sound-dai-cells = <0>;
+		pmic-reset-func = <0>;
 		not-save-power-en = <0x01>;
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
@@ -423,7 +426,6 @@
 		vcc7-supply = <&vcc3v3_sys>;
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
-		wakeup-source;
 
 		pwrkey {
 			status = "okay";
