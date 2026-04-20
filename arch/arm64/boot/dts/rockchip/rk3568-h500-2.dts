@@ -426,6 +426,7 @@
 		vcc7-supply = <&vcc3v3_sys>;
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
+		wakeup-source;
 
 		pwrkey {
 			status = "okay";
