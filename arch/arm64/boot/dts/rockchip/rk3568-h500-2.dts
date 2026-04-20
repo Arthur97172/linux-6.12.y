@@ -645,7 +645,7 @@
 		rk809_codec: codec {
 			#sound-dai-cells = <0>;
 			mic-in-differential;
-			status = "disabled";";
+			status = "disabled";
 		};
 	};
 };
