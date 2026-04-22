@@ -270,7 +270,12 @@
 		pwms = <&pwm0 0 40000 0>;
 		fan-supply = <&dc_12v>;
 		cooling-levels = <0 50 100 150 200 255>;
-	};
+		rockchip,temp-trips = < 50000   1
+					60000   2
+					65000   3
+					70000   4
+					80000   5 >;
+	};	
 };
 
 &cpu0 {
@@ -399,15 +404,19 @@
 		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
 		assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
 		assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
+		clocks = <&cru I2S1_MCLKOUT_TX>;
 		#clock-cells = <1>;
 		clock-names = "mclk";
-		clocks = <&cru I2S1_MCLKOUT_TX>;
-		pinctrl-names = "default", "pmic-sleep", "pmic-reset";
+		pinctrl-names = "default", "pmic-sleep", "pmic-power-off", "pmic-reset";
 		pinctrl-0 = <&pmic_int>;
-		pinctrl-1 = <&soc_slppin_slp>, <&rk817_slppin_slp>;
+		pinctrl-1 = <&soc_slppin_slp &rk817_slppin_slp>;
+		pinctrl-2 = <&soc_slppin_gpio &rk817_slppin_pwrdn>;
+		pinctrl-3 = <&soc_slppin_rst &rk817_slppin_rst>;
 		clock-output-names = "rk808-clkout1", "rk808-clkout2";
 		system-power-controller;
+		wakeup-source;
 		#sound-dai-cells = <0>;
+		pmic-reset-func = <0>;
 		not-save-power-en = <0x01>;
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
@@ -418,7 +427,6 @@
 		vcc7-supply = <&vcc3v3_sys>;
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
-		wakeup-source;
 
 		pwrkey {
 			status = "okay";
@@ -636,15 +644,8 @@
 
 		rk809_codec: codec {
 			#sound-dai-cells = <0>;
-			compatible = "rockchip,rk817-codec";
-			clock-names = "mclk";
-			assigned-clock-rates = <12288000>;
-			pinctrl-names = "default";
-			pinctrl-0 = <&i2s1m0_mclk>;
-			hp-volume = <20>;
-			spk-volume = <3>;
 			mic-in-differential;
-			status = "okay";
+			status = "disabled";
 		};
 	};
 };
@@ -733,11 +734,15 @@
 };
 
 &pcie3x2 {
-	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie_reset_h>;
+	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+	vpcie3v3-supply = <&vcc3v3_sys>;
+	status = "okay";
 };
 
 &sata0 {
-	status = "disabled";
+	status = "okay";
 };
 
 &sata1 {
@@ -781,6 +786,8 @@
 
 &tsadc {
 	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&tsadc_pin>;
 };
 
 &pmu_io_domains {
@@ -824,6 +831,12 @@
 			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};	
+
+	tsadc {
+		tsadc_pin: tsadc-pin {
+			rockchip,pins = <0 RK_PA1 0 &pcfg_pull_none>; 
+	        };
+	    };
 
 	pmic {
 		pmic_int: pmic_int {
@@ -897,6 +910,12 @@
 			rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
+
+	pcie {
+		pcie_reset_h: pcie-reset-h {
+			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};	
 };
 
 &vepu {
