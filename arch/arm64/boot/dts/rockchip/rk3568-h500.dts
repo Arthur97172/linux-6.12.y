@@ -108,9 +108,9 @@
 		vin-supply = <&dc_12v>;
 	};
 	
-	nvme_en: nvme_en {
+	vcc3v3_sata_en: vcc3v3-sata-en {
 		compatible = "regulator-fixed";
-		regulator-name = "nvme_en";
+		regulator-name = "vcc3v3_sata_en";
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-min-microvolt = <3300000>;
@@ -119,7 +119,7 @@
 		gpio = <&gpio3 RK_PA4 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&asm1064_rst>;
-		vin-supply = <&vcc5v0_sys>;
+		vin-supply = <&dc_12v>;
 	};
 
 	vcc5v0_sys: vcc5v0-sys {
@@ -212,7 +212,7 @@
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";    
-		pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin>;
+		pinctrl-0 = <&heartbeat_pin &wifi_pwr_pin &pcie_pwr_pin &led_green_pin &led_blue_pin>;
 		status = "okay";
 
 		heartbeat {
@@ -232,6 +232,20 @@
 			label = "pcie_pwr";
 			gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
 			default-state = "on";
+		};
+
+		led_green {
+			label = "led_green";
+			gpios = <&gpio3 RK_PB5 GPIO_ACTIVE_LOW>;
+			default-state = "on";
+			linux,default-trigger = "heartbeat";
+		};
+
+		led_blue {
+			label = "led_blue";
+			gpios = <&gpio3 RK_PB1 GPIO_ACTIVE_LOW>;
+			default-state = "on";
+			inux,default-trigger = "heartbeat";
 		};
 	};
 
@@ -256,7 +270,12 @@
 		pwms = <&pwm0 0 40000 0>;
 		fan-supply = <&dc_12v>;
 		cooling-levels = <0 50 100 150 200 255>;
-	};
+		rockchip,temp-trips = < 50000   1
+					60000   2
+					65000   3
+					70000   4
+					80000   5 >;
+	};	
 };
 
 &cpu0 {
@@ -329,7 +348,7 @@
 };
 
 &combphy1 { 
-	status = "okay"; 
+	status = "okay";
 };
 
 &combphy2 {
@@ -385,15 +404,19 @@
 		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
 		assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
 		assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
+		clocks = <&cru I2S1_MCLKOUT_TX>;
 		#clock-cells = <1>;
 		clock-names = "mclk";
-		clocks = <&cru I2S1_MCLKOUT_TX>;
-		pinctrl-names = "default", "pmic-sleep", "pmic-reset";
+		pinctrl-names = "default", "pmic-sleep", "pmic-power-off", "pmic-reset";
 		pinctrl-0 = <&pmic_int>;
-		pinctrl-1 = <&soc_slppin_slp>, <&rk817_slppin_slp>;
+		pinctrl-1 = <&soc_slppin_slp &rk817_slppin_slp>;
+		pinctrl-2 = <&soc_slppin_gpio &rk817_slppin_pwrdn>;
+		pinctrl-3 = <&soc_slppin_rst &rk817_slppin_rst>;
 		clock-output-names = "rk808-clkout1", "rk808-clkout2";
 		system-power-controller;
+		wakeup-source;
 		#sound-dai-cells = <0>;
+		pmic-reset-func = <0>;
 		not-save-power-en = <0x01>;
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
@@ -404,7 +427,6 @@
 		vcc7-supply = <&vcc3v3_sys>;
 		vcc8-supply = <&vcc3v3_sys>;
 		vcc9-supply = <&vcc3v3_sys>;
-		wakeup-source;
 
 		pwrkey {
 			status = "okay";
@@ -622,15 +644,8 @@
 
 		rk809_codec: codec {
 			#sound-dai-cells = <0>;
-			compatible = "rockchip,rk817-codec";
-			clock-names = "mclk";
-			assigned-clock-rates = <12288000>;
-			pinctrl-names = "default";
-			pinctrl-0 = <&i2s1m0_mclk>;
-			hp-volume = <20>;
-			spk-volume = <3>;
 			mic-in-differential;
-			status = "okay";
+			status = "disabled";
 		};
 	};
 };
@@ -709,7 +724,7 @@
 	num-viewport = <4>;
 	pinctrl-0 = <&asm1064_rst>;
 	reset-deassert-ms = <500>;
-	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;	
+	reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc5v0_sys>;
 	status = "okay";
 };
@@ -720,13 +735,14 @@
 
 &pcie3x2 {
 	pinctrl-names = "default";
+	pinctrl-0 = <&pcie_reset_h>;
 	reset-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&nvme_en>;
+	vpcie3v3-supply = <&vcc3v3_sys>;
 	status = "okay";
 };
 
 &sata0 {
-	status = "disabled";
+	status = "okay";
 };
 
 &sata1 {
@@ -770,6 +786,8 @@
 
 &tsadc {
 	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&tsadc_pin>;
 };
 
 &pmu_io_domains {
@@ -813,6 +831,12 @@
 			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};	
+
+	tsadc {
+		tsadc_pin: tsadc-pin {
+			rockchip,pins = <0 RK_PA1 0 &pcfg_pull_none>; 
+	        };
+	    };
 
 	pmic {
 		pmic_int: pmic_int {
@@ -863,7 +887,15 @@
 		pcie_pwr_pin: pcie-pwr-pin {
 			rockchip,pins = <4 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
         };
-    };
+		
+		led_green_pin: led-green-pin {
+			rockchip,pins = <3 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		led_blue_pin: led-blue-pin {
+			rockchip,pins = <3 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
 
 	spi1 {
 		/omit-if-no-ref/
