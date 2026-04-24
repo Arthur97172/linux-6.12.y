@@ -660,20 +660,11 @@
 	status = "okay";
 };
 
-&pmucru {
-	rockchip,pmugrf = <&pmugrf>;
-	rockchip,grf = <&grf>;
-};
-
 &pwm4 {
 	status = "okay";
 };
 
 &combphy2 {
-	status = "okay";
-};
-
-&backlight {
 	status = "okay";
 };
 
