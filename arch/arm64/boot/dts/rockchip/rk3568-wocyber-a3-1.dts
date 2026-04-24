@@ -572,7 +572,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c5m0_xfer>;
 
-	mxc6655xa: mxc6655xa@15 {
+	mxc6655xa@15 {
 		compatible = "gs_mxc6655xa";
 		reg = <0x15>;
 		status = "okay";
@@ -590,6 +590,7 @@
 		compatible = "haoyu,hym8563";
 		reg = <0x51>;
 		status = "okay";
+		#clock-cells = <0>;
 	};
 };
 
