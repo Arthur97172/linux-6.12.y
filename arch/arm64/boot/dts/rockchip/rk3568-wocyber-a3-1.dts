@@ -548,23 +548,6 @@
 	};
 };
 
-&i2c1 {
-	status = "disabled";
-
-	touchscreen0: goodix@14 {
-		compatible = "goodix,gt1151";
-		reg = <0x14>;
-		interrupt-parent = <&gpio0>;
-		interrupts = <RK_PB5 IRQ_TYPE_EDGE_FALLING>;
-		AVDD28-supply = <&vcc3v3_lcd0_n>;
-		irq-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&touch_int &touch_rst>;
-		reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_HIGH>;
-		VDDIO-supply = <&vcc3v3_lcd0_n>;
-	};
-};
-
 &i2s0_8ch {
 	status = "okay";
 };
@@ -582,15 +565,6 @@
 	};
 };
 
-&mdio1 {
-	rgmii_phy1: ethernet-phy@0 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x0>;
-		reset-assert-us = <20000>;
-		reset-deassert-us = <100000>;
-		reset-gpios = <&gpio2 RK_PD1 GPIO_ACTIVE_LOW>;
-	};
-};
 
 &pcie2x1 {
 	reset-gpios = <&gpio3 RK_PD6 GPIO_ACTIVE_HIGH>;
@@ -599,14 +573,6 @@
 };
 
 &pinctrl {
-	display {
-		vcc3v3_lcd0_n_en: vcc3v3_lcd0_n_en {
-			rockchip,pins = <0 RK_PC7 0 &pcfg_pull_none>;
-		};
-		vcc3v3_lcd1_n_en: vcc3v3_lcd1_n_en {
-			rockchip,pins = <0 RK_PC5 0 &pcfg_pull_none>;
-		};
-	};
 
 	hdmitx {
 		hdmitx_scl: hdmitx-scl {
@@ -632,15 +598,6 @@
 		pmic_int: pmic_int {
 			rockchip,pins =
 				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-	};
-
-	touchscreen {
-		touch_int: touch_int {
-			rockchip,pins = <0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-		touch_rst: touch_rst {
-			rockchip,pins = <0 RK_PB6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
