@@ -98,7 +98,7 @@
 			default-state = "on";
 			linux,default-trigger = "heartbeat";
 			pinctrl-names = "default";
-			pinctrl-0 = <&led_work_en>;
+			pinctrl-0 = <&led_1_en>;
 		};
 
 		led_2: led-2 {
@@ -107,7 +107,7 @@
 			default-state = "on";
 			linux,default-trigger = "heartbeat";
 			pinctrl-names = "default";
-			pinctrl-0 = <&led_work_en>;
+			pinctrl-0 = <&led_2_en>;
 		};
 
 		led_3: led-3 {
@@ -116,7 +116,7 @@
 			default-state = "on";
 			linux,default-trigger = "heartbeat";
 			pinctrl-names = "default";
-			pinctrl-0 = <&led_work_en>;
+			pinctrl-0 = <&led_3_en>;
 		};
 	};
 
@@ -566,8 +566,20 @@
 	};
 
 	leds {
-		led_work_en: led_work_en {
+		led_work_en: led-work-en {
 			rockchip,pins = <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		led_1_en: led-1 {
+			rockchip,pins = <0 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		led_2_en: led-2 {
+			rockchip,pins = <0 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		led_3_en: led-3 {
+			rockchip,pins = <0 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
