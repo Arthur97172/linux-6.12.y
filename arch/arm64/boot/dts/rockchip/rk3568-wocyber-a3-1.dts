@@ -56,15 +56,6 @@
 		};
 	};
 
-	backlight: backlight {
-		compatible = "pwm-backlight";
-		brightness-levels = <20 220>;
-		default-brightness-level = <100>;
-		num-interpolated-steps = <200>;
-		power-supply = <&vcc3v3_sys>;
-		pwms = <&pwm4 0 25000 0>;
-	};
-
 	chosen: chosen {
 		stdout-path = "serial2:1500000n8";
 	};
