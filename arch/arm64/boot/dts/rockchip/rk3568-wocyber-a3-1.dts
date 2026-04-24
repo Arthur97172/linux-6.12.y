@@ -583,6 +583,12 @@
 
 &pinctrl {
 
+	mxc6655xa {
+		mxc6655_irq_pin: mxc6655-irq-pin {
+			rockchip,pins = <3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
 	hdmitx {
 		hdmitx_scl: hdmitx-scl {
 			rockchip,pins = <4 RK_PB1 1 &pcfg_pull_none>;
