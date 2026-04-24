@@ -98,7 +98,7 @@
 		simple-audio-card,format = "i2s";
 		simple-audio-card,name = "Analog RK809";
 		simple-audio-card,mclk-fs = <256>;
-
+		status = "okay";
 		simple-audio-card,cpu {
 			sound-dai = <&i2s1_8ch>;
 		};
