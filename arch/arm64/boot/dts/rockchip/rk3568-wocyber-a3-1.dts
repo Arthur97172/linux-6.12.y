@@ -91,6 +91,33 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&led_work_en>;
 		};
+
+		led_1: led-1 {
+			label = "led1";
+			gpios = <&gpio0 RK_PB7 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+			linux,default-trigger = "heartbeat";
+			pinctrl-names = "default";
+			pinctrl-0 = <&led_work_en>;
+		};
+
+		led_2: led-2 {
+			label = "led2";
+			gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>; 
+			default-state = "on";
+			linux,default-trigger = "heartbeat";
+			pinctrl-names = "default";
+			pinctrl-0 = <&led_work_en>;
+		};
+
+		led_3: led-3 {
+			label = "led3";
+			gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+			linux,default-trigger = "heartbeat";
+			pinctrl-names = "default";
+			pinctrl-0 = <&led_work_en>;
+		};
 	};
 
 	rk809-sound {
