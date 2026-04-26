@@ -545,33 +545,6 @@
 	status = "okay";
 };
 
-&i2c5 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c5m0_xfer>;
-
-	mxc6655xa@15 {
-		compatible = "gs_mxc6655xa";
-		reg = <0x15>;
-		status = "okay";
-		irq-gpio = <&gpio3 RK_PC1 GPIO_ACTIVE_LOW>;	
-		pinctrl-names = "default";
-		pinctrl-0 = <&mxc6655_irq_pin>;
-		irq_enable = <0>;
-		poll_delay_ms = <30>;
-		type = <2>;
-		power-off-in-suspend = <1>;
-		layout = <1>;
-	};
-
-	hym8563: rtc@51 {
-		compatible = "haoyu,hym8563";
-		reg = <0x51>;
-		status = "okay";
-		#clock-cells = <0>;
-	};
-};
-
 &mdio0 {
 	rgmii_phy0: ethernet-phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
