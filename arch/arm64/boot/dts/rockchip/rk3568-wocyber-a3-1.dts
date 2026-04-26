@@ -186,6 +186,10 @@
 	status = "okay";
 };
 
+&combphy2 {
+	status = "okay";
+};
+
 &cpu0 {
 	cpu-supply = <&vdd_cpu>;
 };
@@ -645,10 +649,6 @@
 	status = "okay";
 };
 
-&combphy2 {
-	status = "okay";
-};
-
 &saradc {
 	vref-supply = <&vcca_1v8>;
 	status = "okay";
@@ -724,14 +724,6 @@
 
 &usb2phy1_otg {
 	phy-supply = <&vcc5v0_usb_host>;
-	status = "okay";
-};
-
-&vepu {
-	status = "okay";
-};
-
-&vepu_mmu {
 	status = "okay";
 };
 
