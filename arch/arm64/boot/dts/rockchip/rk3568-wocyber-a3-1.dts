@@ -247,8 +247,6 @@
 &hdmi {
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&hdmitx_scl &hdmitx_sda &hdmitxm0_cec>;
 	status = "okay";
 };
 
@@ -592,20 +590,6 @@
 		};
 	};
 
-	hdmitx {
-		hdmitx_scl: hdmitx-scl {
-			rockchip,pins = <4 RK_PB1 1 &pcfg_pull_none>;
-		};
-
-		hdmitx_sda: hdmitx-sda {
-			rockchip,pins = <4 RK_PB2 1 &pcfg_pull_none>;
-		};
-
-		hdmitxm0_cec: hdmitxm0-cec {
-			rockchip,pins = <4 RK_PB3 1 &pcfg_pull_none>;
-		};
-	};
-
 	leds {
 		led_work_en: led_work_en {
 			rockchip,pins = <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -752,9 +736,9 @@
 };
 
 &vop {
+	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
+	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
 	status = "okay";
-	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>, <&cru DCLK_VOP2>;
-	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>, <&cru PLL_GPLL>;
 };
 
 &vop_mmu {
