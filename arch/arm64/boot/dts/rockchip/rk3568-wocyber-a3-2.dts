@@ -204,6 +204,7 @@
 &hdmi {
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
+	ddc-i2c-bus = <&i2c3>;
 	status = "okay";
 };
 
