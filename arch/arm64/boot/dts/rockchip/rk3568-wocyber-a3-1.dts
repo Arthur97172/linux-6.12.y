@@ -22,18 +22,8 @@
 
 	aliases {
 		ethernet0 = &gmac0;
-		ethernet1 = &gmac1;
 		mmc0 = &sdmmc0;
 		mmc1 = &sdhci;
-	};
-
-	backlight: backlight {
-		compatible = "pwm-backlight";
-		brightness-levels = <20 220>;
-		default-brightness-level = <100>;
-		num-interpolated-steps = <200>;
-		power-supply = <&vcc3v3_sys>;
-		pwms = <&pwm4 0 25000 0>;
 	};
 
 	chosen: chosen {
@@ -175,13 +165,6 @@
 	pinctrl-0 = <&sata2_pins>;
 	assigned-clock-rates = <24000000>;
 	status = "okay";
-};
-
-&dsi0_in {
-	status = "disabled";
-	dsi0_in_vp1: endpoint {
-		remote-endpoint = <&vp1_out_dsi0>;
-	};
 };
 
 &gmac0 {
@@ -487,16 +470,6 @@
 	};
 };
 
-&mdio1 {
-	rgmii_phy1: ethernet-phy@0 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x0>;
-		reset-assert-us = <20000>;
-		reset-deassert-us = <100000>;
-		reset-gpios = <&gpio2 RK_PD1 GPIO_ACTIVE_LOW>;
-	};
-};
-
 &pinctrl {
 
 	leds {
@@ -538,14 +511,6 @@
 &pmucru {
 	rockchip,pmugrf = <&pmugrf>;
 	rockchip,grf = <&grf>;
-};
-
-&pwm4 {
-	status = "okay";
-};
-
-&backlight {
-	status = "okay";
 };
 
 &saradc {
