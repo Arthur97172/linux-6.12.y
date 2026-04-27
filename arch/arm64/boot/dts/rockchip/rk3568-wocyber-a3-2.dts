@@ -188,6 +188,13 @@
 	status = "okay";
 };
 
+&mdio0 {
+	rgmii_phy0: ethernet-phy@0 {
+		compatible = "ethernet-phy-ieee802.3-c22";
+		reg = <0x0>;
+		clocks = <&cru &i2s1m0_sclktx>;
+	};
+};
 
 &gpu {
 	mali-supply = <&vdd_gpu>;
@@ -460,14 +467,6 @@
 &i2s1_8ch {
 	rockchip,trcm-sync-tx-only;
 	status = "okay";
-};
-
-&mdio0 {
-	rgmii_phy0: ethernet-phy@0 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x0>;
-		clocks = <&cru &i2s1m0_sclktx>;
-	};
 };
 
 &pinctrl {
