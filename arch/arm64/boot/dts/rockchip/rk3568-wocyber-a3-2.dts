@@ -470,17 +470,6 @@
 	status = "okay";
 };
 
-&i2c5 {
-	status = "okay";
-
-	pcf8563: rtc@51 {
-		status = "okay";
-		compatible = "nxp,pcf8563";
-		reg = <0x51>;
-		#clock-cells = <0>;
-	};	
-};
-
 &mdio0 {
 	rgmii_phy0: ethernet-phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
