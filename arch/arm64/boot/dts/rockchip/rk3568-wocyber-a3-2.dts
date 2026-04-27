@@ -479,6 +479,36 @@
 	status = "okay";
 };
 
+&i2c5 {
+	status = "okay";
+	clock-frequency = <400000>; 
+
+	mxc6655xa: accelerometer@15 {
+		compatible = "gs,mxc6655xa";
+		reg = <0x15>;
+		interrupt-parent = <&gpio5>;
+		interrupts = <RK_PC1 IRQ_TYPE_LEVEL_HIGH>;
+		irq-gpios = <&gpio5 RK_PC1 GPIO_ACTIVE_HIGH>;
+		poll_delay_ms = <30>;
+		layout = <1>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&gsensor_int_pin>;
+		power-off-in-suspend; 
+	};
+
+	hym8563: rtc@51 {
+		compatible = "haoyu,hym8563";
+		reg = <0x51';
+		#clock-cells = <0>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&rtc_int_pin>;
+		interrupt-parent = <&gpio0>;
+		interrupts = <RK_PD3 IRQ_TYPE_LEVEL_LOW>;
+		wakeup-source;
+		status = "okay";
+	};
+};
+
 &mdio0 {
 	rgmii_phy0: ethernet-phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
@@ -509,6 +539,18 @@
 		pmic_int: pmic_int {
 			rockchip,pins =
 				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+	};
+
+	gsensor {
+		gsensor_int_pin: gsensor-int-pin {
+			rockchip,pins = <5 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	rtc {
+		rtc_int_pin: rtc-int-pin {
+			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
