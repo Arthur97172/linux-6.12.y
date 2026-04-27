@@ -167,13 +167,6 @@
 	status = "okay";
 };
 
-&dsi0_in {
-	status = "disabled";
-	dsi0_in_vp1: endpoint {
-		remote-endpoint = <&vp1_out_dsi0>;
-	};
-};
-
 &gmac0 {
 	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>, <&cru SCLK_GMAC0>;
 	assigned-clock-parents = <&cru SCLK_GMAC0_RGMII_SPEED>;
