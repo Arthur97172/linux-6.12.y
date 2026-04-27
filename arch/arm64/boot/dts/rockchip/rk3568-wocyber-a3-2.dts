@@ -477,6 +477,9 @@
 &i2c3 {
     pinctrl-names = "default";
     pinctrl-0 = <&i2c3m0_xfer>; 
+    clock-frequency = <100000>;
+    i2c-scl-rising-time-ns = <300>; 
+    i2c-scl-falling-time-ns = <15>;
     status = "okay";
 };
 
