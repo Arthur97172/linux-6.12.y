@@ -27,15 +27,6 @@
 		mmc1 = &sdhci;
 	};
 
-	backlight: backlight {
-		compatible = "pwm-backlight";
-		brightness-levels = <20 220>;
-		default-brightness-level = <100>;
-		num-interpolated-steps = <200>;
-		power-supply = <&vcc3v3_sys>;
-		pwms = <&pwm4 0 25000 0>;
-	};
-
 	chosen: chosen {
 		stdout-path = "serial2:1500000n8";
 	};
@@ -481,32 +472,13 @@
 
 &i2c5 {
 	status = "okay";
-	clock-frequency = <400000>; 
 
-	mxc6655xa: accelerometer@15 {
-		compatible = "gs,mxc6655xa";
-		reg = <0x15>;
-		interrupt-parent = <&gpio5>;
-		interrupts = <RK_PC1 IRQ_TYPE_LEVEL_HIGH>;
-		irq-gpios = <&gpio5 RK_PC1 GPIO_ACTIVE_HIGH>;
-		poll_delay_ms = <30>;
-		layout = <1>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&gsensor_int_pin>;
-		power-off-in-suspend; 
-	};
-
-	hym8563: rtc@51 {
-		compatible = "haoyu,hym8563";
-		reg = <0x51';
-		#clock-cells = <0>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&rtc_int_pin>;
-		interrupt-parent = <&gpio0>;
-		interrupts = <RK_PD3 IRQ_TYPE_LEVEL_LOW>;
-		wakeup-source;
+	pcf8563: rtc@51 {
 		status = "okay";
-	};
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+		#clock-cells = <0>;
+	};	
 };
 
 &mdio0 {
@@ -542,18 +514,6 @@
 		};
 	};
 
-	gsensor {
-		gsensor_int_pin: gsensor-int-pin {
-			rockchip,pins = <5 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-
-	rtc {
-		rtc_int_pin: rtc-int-pin {
-			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-	};
-
 	usb {
 		vcc5v0_usb_host_en: vcc5v0_usb_host_en {
 			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -580,14 +540,6 @@
 &pmucru {
 	rockchip,pmugrf = <&pmugrf>;
 	rockchip,grf = <&grf>;
-};
-
-&pwm4 {
-	status = "okay";
-};
-
-&backlight {
-	status = "okay";
 };
 
 &saradc {
