@@ -19,6 +19,7 @@
 / {
 	model = "Wocyber A3";
 	compatible = "rockchip,wocyber-a3", "rockchip,rk3568";
+	hw_support = "hdmi";
 
 	aliases {
 		ethernet0 = &gmac0;
