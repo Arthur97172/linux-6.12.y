@@ -477,16 +477,15 @@
 &i2c3 {
     pinctrl-names = "default";
     pinctrl-0 = <&i2c3m0_xfer>; 
-    clock-frequency = <100000>;
-    i2c-scl-rising-time-ns = <450>; 
-    i2c-scl-falling-time-ns = <30>;
     status = "okay";
 };
 
 &i2c5 {
     pinctrl-names = "default";
     pinctrl-0 = <&i2c5m0_xfer>; 
-    clock-frequency = <100000>;
+    clock-frequency = <400000>;
+    i2c-scl-rising-time-ns = <450>; 
+    i2c-scl-falling-time-ns = <30>;
     status = "okay";
 };
 
