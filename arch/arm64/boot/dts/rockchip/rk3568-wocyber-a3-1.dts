@@ -19,6 +19,7 @@
 / {
 	model = "Wocyber A3";
 	compatible = "rockchip,wocyber-a3", "rockchip,rk3568";
+	hw_support = "hdmi";
 
 	aliases {
 		ethernet0 = &gmac0;
@@ -204,6 +205,7 @@
 &hdmi {
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
+	ddc-i2c-bus = <&i2c3>;
 	status = "okay";
 };
 
@@ -333,6 +335,8 @@
 
 			vdda0v9_image: LDO_REG1 {
 				regulator-name = "vdda0v9_image";
+				regulator-always-on;
+				regulator-boot-on;
 				regulator-min-microvolt = <900000>;
 				regulator-max-microvolt = <900000>;
 
@@ -427,6 +431,8 @@
 
 			vcca1v8_image: LDO_REG9 {
 				regulator-name = "vcca1v8_image";
+				regulator-always-on;
+				regulator-boot-on;
 				regulator-min-microvolt = <1800000>;
 				regulator-max-microvolt = <1800000>;
 
@@ -467,6 +473,15 @@
 &i2s1_8ch {
 	rockchip,trcm-sync-tx-only;
 	status = "okay";
+};
+
+&i2c3 {
+    pinctrl-names = "default";
+    pinctrl-0 = <&i2c3m1_xfer>; 
+    clock-frequency = <400000>;
+    i2c-scl-rising-time-ns = <450>; 
+    i2c-scl-falling-time-ns = <30>;
+    status = "okay";
 };
 
 &pinctrl {
@@ -604,9 +619,9 @@
 };
 
 &vop {
-	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
-	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
 	status = "okay";
+	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>, <&cru DCLK_VOP2>;
+	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>, <&cru PLL_GPLL>;
 };
 
 &vop_mmu {
@@ -614,7 +629,10 @@
 };
 
 &vp0 {
-	vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
+    #address-cells = <1>;
+    #size-cells = <0>;
+    status = "okay";
+    vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
 		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
 		remote-endpoint = <&hdmi_in_vp0>;
 	};
