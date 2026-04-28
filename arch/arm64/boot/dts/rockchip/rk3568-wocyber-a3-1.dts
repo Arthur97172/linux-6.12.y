@@ -639,6 +639,10 @@
 	};
 };
 
+&display_subsystem {
+	status = "okay";
+};
+
 / {
 	/delete-node/ video-codec@fdea0400;
 };
