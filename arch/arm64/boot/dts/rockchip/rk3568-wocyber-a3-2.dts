@@ -29,6 +29,8 @@
 
 	chosen: chosen {
 		stdout-path = "serial2:1500000n8";
+		power-key-factory-reset;
+		power-key-dbclick;
 	};
 
 	dc_12v: regulator-dc-12v {
