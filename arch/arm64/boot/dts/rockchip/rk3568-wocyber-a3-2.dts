@@ -528,7 +528,13 @@
 		};
 
 		codec {
-			rockchip,mic-in-differential;
+			compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
+    			status = "okay";
+    			#sound-dai-cells = <0>;
+    			clocks = <&cru I2S1_MCLKOUT_TX>;
+    			clock-names = "mclk";
+    			assigned-clocks = <&cru I2S1_MCLKOUT_TX>, <&cru CLK_I2S1_8CH_TX>;
+    			assigned-clock-rates = <12288000>;
 		};
 	};
 };
