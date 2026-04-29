@@ -95,6 +95,13 @@
 			linux,default-trigger = "heartbeat";
 			pinctrl-names = "default";
 			pinctrl-0 = <&led_work_en>;
+
+		led_mmc: led-1 {
+			gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
+			label = "mmc1::";
+			linux,default-trigger = "disk-activity";
+			pinctrl-names = "default";
+			pinctrl-0 = <&led_mmc_pin>; 
 		};
 	};
 
