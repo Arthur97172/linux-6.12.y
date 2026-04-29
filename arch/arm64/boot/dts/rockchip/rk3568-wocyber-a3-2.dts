@@ -95,6 +95,13 @@
 			linux,default-trigger = "heartbeat";
 			pinctrl-names = "default";
 			pinctrl-0 = <&led_work_en>;
+
+		led_mmc: led-1 {
+			gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
+			label = "mmc1::";
+			linux,default-trigger = "disk-activity";
+			pinctrl-names = "default";
+			pinctrl-0 = <&led_mmc_pin>; 
 		};
 	};
 
@@ -571,25 +578,24 @@
 		led_work_en: led_work_en {
 			rockchip,pins = <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
+		led_mmc_pin: led-mmc-pin {
+			rockchip,pins = <0 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
 	};
 
 	pmic {
 		pmic_int: pmic-int {
 			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
-
 		soc_slppin_gpio: soc-slppin-gpio {
 			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_output_low>;
 		};
-
 		soc_slppin_slp: soc-slppin-slp {
 			rockchip,pins = <0 RK_PA2 1 &pcfg_pull_up>;
 		};
-
 		soc_slppin_pwrdn: soc-slppin-pwrdn {
 			rockchip,pins = <0 RK_PA2 2 &pcfg_pull_none>;
 		};
-
 		soc_slppin_rst: soc-slppin-rst {
 			rockchip,pins = <0 RK_PA2 2 &pcfg_pull_none>;
 		};
