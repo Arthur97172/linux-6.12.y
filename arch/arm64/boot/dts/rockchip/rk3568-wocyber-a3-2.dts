@@ -312,7 +312,6 @@
 			status = "okay";
 		};
 
-
 		pinctrl_rk8xx {
 			gpio-controller;
 			#gpio-cells = <2>;
