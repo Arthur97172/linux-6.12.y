@@ -30,7 +30,7 @@
 	chosen: chosen {
 		stdout-path = "serial2:1500000n8";
 		power-key-factory-reset;
-		power-key-dbclick;
+		power-key-dbclick;		
 	};
 
 	dc_12v: regulator-dc-12v {
@@ -207,7 +207,8 @@
 &hdmi {
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
-	ddc-i2c-bus = <&i2c3>;
+	hdmi-5v-supply = <&vcc5v0_sys>;
+	ddc-i2c-bus = <&i2c5>;	
 	status = "okay";
 };
 
@@ -477,9 +478,9 @@
 	status = "okay";
 };
 
-&i2c3 {
+&i2c5 {
     pinctrl-names = "default";
-    pinctrl-0 = <&i2c3m1_xfer>; 
+    pinctrl-0 = <&i2c5m0_xfer>; 
     clock-frequency = <400000>;
     i2c-scl-rising-time-ns = <450>; 
     i2c-scl-falling-time-ns = <30>;
@@ -621,10 +622,9 @@
 };
 
 &vop {
+	assigned-clocks = <&cru DCLK_VOP0>;
+	assigned-clock-parents = <&pmucru PLL_HPLL>;
 	status = "okay";
-	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>, <&cru DCLK_VOP2>;
-	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>, <&cru PLL_GPLL>;
-  	disable-win-move;
 };
 
 &vop_mmu {
@@ -632,10 +632,8 @@
 };
 
 &vp0 {
-    #address-cells = <1>;
-    #size-cells = <0>;
-    status = "okay";
-    vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
+	status = "okay";
+	vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
 		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
 		remote-endpoint = <&hdmi_in_vp0>;
 	};
