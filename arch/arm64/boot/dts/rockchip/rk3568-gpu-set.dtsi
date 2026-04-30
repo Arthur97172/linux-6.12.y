@@ -50,12 +50,29 @@
 			bits = <0 5>;
 		};
 
+		cpu_code: cpu-code@2 {
+			reg = <0x02 0x02>;
+		};
+
+		cpu_version: cpu-version@8 {
+			reg = <0x08 0x01>;
+			bits = <3 3>;
+		};
+		
 		log_leakage: log-leakage@1b {
 			reg = <0x1b 0x1>;
 		};
 
+		cpu_leakage: cpu-leakage@1a {
+			reg = <0x1a 0x01>;
+		};
+
 		npu_leakage: npu-leakage@1c {
 			reg = <0x1c 0x1>;
+		};
+
+		id: id@a {
+			reg = <0x0a 0x10>;
 		};
 
 		gpu_leakage: gpu-leakage@1d {
