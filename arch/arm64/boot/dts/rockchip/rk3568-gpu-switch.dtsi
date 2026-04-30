@@ -1,0 +1,112 @@
+/*
+ * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
+ * Copyright (c) 2025 arthur
+ */
+
+#include "rk3568-gpu-set.dtsi"
+#include "rk3568-crypto.dtsi"
+
+&gpu {
+	mali-supply = <&vdd_gpu>;
+	nvmem-cells = <&gpu_leakage>;
+	nvmem-cell-names = "leakage";
+	status = "okay";
+};
+
+#ifdef DT_ENABLE_NPU
+&vdd_npu {
+	regulator-init-microvolt = <900000>;
+	regulator-always-on;
+	regulator-boot-on;
+};
+#endif
+
+&bus_npu {
+	bus-supply = <&vdd_logic>;
+	pvtm-supply = <&vdd_cpu>;
+#ifdef DT_ENABLE_NPU
+	status = "okay";
+#endif
+};
+
+&rknpu {
+	rknpu-supply = <&vdd_npu>;
+#ifdef DT_ENABLE_NPU
+	status = "okay";
+#endif
+};
+
+&rknpu_mmu {
+#ifdef DT_ENABLE_NPU
+	status = "okay";
+#endif
+};
+
+&rga {
+	status = "okay";
+};
+
+&vpu {
+	memory-region = <&vpu_cma>;
+	assigned-clocks = <&cru ACLK_VPU>, <&cru HCLK_VPU>;
+	assigned-clock-rates = <400000000>, <200000000>;
+	power-domains = <&power RK3568_PD_VPU>;
+	status = "okay";
+};
+
+&vdpu_mmu {
+	status = "okay";
+};
+
+&rkvdec {
+	memory-region = <&vpu_cma>;
+	assigned-clocks = <&cru ACLK_RKVDEC>, <&cru CLK_RKVDEC_CORE>, <&cru CLK_RKVDEC_CA>;
+	assigned-clock-rates = <396000000>, <396000000>, <396000000>;
+	power-domains = <&power RK3568_PD_RKVDEC>;
+	iommus = <&rkvdec_mmu>;	
+	status = "okay";
+};
+
+&rkvdec_mmu {
+	status = "okay";
+};
+
+&rkvenc {
+	memory-region = <&vpu_cma>;
+	nvmem-cells = <&log_leakage>;
+    nvmem-cell-names = "leakage";
+	operating-points-v2 = <&rkvenc_opp_table>;
+	venc-supply = <&vdd_logic>;
+	power-domains = <&power RK3568_PD_RKVENC>;
+	assigned-clocks = <&cru ACLK_RKVENC>, <&cru CLK_RKVENC_CORE>;
+	assigned-clock-rates = <396000000>, <396000000>;
+	status = "okay";
+};
+
+&rkvenc_mmu {
+	status = "okay";
+};
+
+&iep {
+	status = "okay";
+};
+
+&iep_mmu {
+	status = "okay";
+};
+
+&jpegd {
+	status = "okay";
+};
+
+&jpegd_mmu {
+	status = "okay";
+};
+
+&mpp_srv {
+	status = "okay";
+};
+
+&otp {
+	status = "okay";
+};
