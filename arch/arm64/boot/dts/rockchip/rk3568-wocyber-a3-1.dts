@@ -11,6 +11,7 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/soc/rockchip,vop2.h>
+#include <dt-bindings/clock/rk3568-cru.h>
 #include "rk3568.dtsi"
 #include "rk3568-gpu-switch.dtsi"
 #include "rk3568-ramoops.dtsi"
@@ -176,14 +177,32 @@
 };
 
 &combphy0 {
+    clocks = <&pmucru 31>, <&cru 380>, <&cru 127>;
+    assigned-clocks = <&pmucru 31>;
+    assigned-clock-rates = <100000000>;
+    resets = <&cru 452>, <&cru 453>;
+    reset-names = "apb", "phy";
+    rockchip,phy-bits = <0x1>;
 	status = "okay";
 };
 
 &combphy1 {
-	status = "okay";
+    clocks = <&pmucru 34>, <&cru 381>, <&cru 127>;
+    assigned-clocks = <&pmucru 34>;
+    assigned-clock-rates = <100000000>;
+    resets = <&cru 454>, <&cru 455>;
+    reset-names = "apb", "phy"; 
+    rockchip,phy-bits = <0x1>;
+    status = "okay";
 };
 
 &combphy2 {
+    clocks = <&pmucru 37>, <&cru 382>, <&cru 127>;
+	assigned-clocks = <&pmucru 37>;
+	assigned-clock-rates = <100000000>;
+	resets = <&cru 456>, <&cru 457>;
+    reset-names = "apb", "phy";	
+	rockchip,phy-bits = <0x2>;
 	status = "okay";
 };
 
@@ -206,7 +225,10 @@
 &sata2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&sata2_pins>;
-	assigned-clock-rates = <24000000>;
+	phys = <&combphy2 1>;
+	phy-names = "sata-phy";
+	assigned-clocks = <&cru CLK_SATA2_PMALIVE>, <&cru CLK_SATA2_RXOOB>;
+	assigned-clock-rates = <24000000>, <50000000>;
 	status = "okay";
 };
 
@@ -235,7 +257,7 @@
 	rgmii_phy0: ethernet-phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x0>;
-		clocks = <&cru &i2s1m0_sclktx>;
+		clocks = <&cru MCLK_I2S1_8CH_TX>;
 	};
 };
 
@@ -248,7 +270,6 @@
 	avdd-0v9-supply = <&vdda0v9_image>;
 	avdd-1v8-supply = <&vcca1v8_image>;
 	hdmi-5v-supply = <&vcc5v0_sys>;
-	ddc-i2c-bus = <&i2c5>;	
 	status = "okay";
 };
 
@@ -556,12 +577,11 @@
 	status = "okay";
 };
 
+&i2c3 {
+    status = "okay";
+};
+
 &i2c5 {
-    pinctrl-names = "default";
-    pinctrl-0 = <&i2c5m0_xfer>; 
-    clock-frequency = <400000>;
-    i2c-scl-rising-time-ns = <450>; 
-    i2c-scl-falling-time-ns = <30>;
     status = "okay";
 };
 
@@ -678,6 +698,9 @@
 	extcon = <&usb2phy0>;
 	dr_mode = "host";
 	status = "okay";
+	snps,dis_enblslpm_quirk;
+    snps,dis-u2-freeclk-exists-quirk;
+    snps,dis_rxdet_inp3_quirk;
 };
 
 &usb_host1_ehci {
