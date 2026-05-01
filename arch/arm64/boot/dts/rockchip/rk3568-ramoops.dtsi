@@ -12,12 +12,5 @@
 			pmsg-size = <0x50000>;
 			record-size = <0x20000>;
 		};
-
-		vpu_cma: linux,cma {
-			compatible = "shared-dma-pool";
-			reusable;
-			size = <0x0 0x20000000>;
-			linux,cma-default;
-		};
 	};
 };

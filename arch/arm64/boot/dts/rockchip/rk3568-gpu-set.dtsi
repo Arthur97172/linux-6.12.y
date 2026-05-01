@@ -79,6 +79,10 @@
 			reg = <0x1d 0x1>;
 		};
 
+		venc_leakage: venc-leakage@1e {
+			reg = <0x1e 0x1>;
+		};
+
 		gpu_opp_info: gpu-opp-info@3c {
 			reg = <0x3c 0x6>;
 		};

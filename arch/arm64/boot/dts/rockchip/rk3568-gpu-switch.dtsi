@@ -47,7 +47,6 @@
 };
 
 &vpu {
-	memory-region = <&vpu_cma>;
 	assigned-clocks = <&cru ACLK_VPU>, <&cru HCLK_VPU>;
 	assigned-clock-rates = <400000000>, <200000000>;
 	power-domains = <&power RK3568_PD_VPU>;
@@ -59,11 +58,9 @@
 };
 
 &rkvdec {
-	memory-region = <&vpu_cma>;
 	assigned-clocks = <&cru ACLK_RKVDEC>, <&cru CLK_RKVDEC_CORE>, <&cru CLK_RKVDEC_CA>;
 	assigned-clock-rates = <396000000>, <396000000>, <396000000>;
 	power-domains = <&power RK3568_PD_RKVDEC>;
-	iommus = <&rkvdec_mmu>;	
 	status = "okay";
 };
 
@@ -72,9 +69,6 @@
 };
 
 &rkvenc {
-	memory-region = <&vpu_cma>;
-	nvmem-cells = <&log_leakage>;
-    nvmem-cell-names = "leakage";
 	operating-points-v2 = <&rkvenc_opp_table>;
 	venc-supply = <&vdd_logic>;
 	power-domains = <&power RK3568_PD_RKVENC>;
@@ -83,11 +77,18 @@
 	status = "okay";
 };
 
+
+&rkvenc_opp_table {
+	nvmem-cells = <&core_pvtm>, <&cpu_leakage>;
+	nvmem-cell-names = "pvtm", "leakage";
+};
+
 &rkvenc_mmu {
 	status = "okay";
 };
 
 &iep {
+	iommus = <&iep_mmu>;
 	status = "okay";
 };
 
@@ -104,6 +105,18 @@
 };
 
 &mpp_srv {
+	status = "okay";
+};
+
+&power {
+	status = "okay";
+};
+
+&vepu {
+	status = "okay";
+};
+
+&vepu_mmu {
 	status = "okay";
 };
 
