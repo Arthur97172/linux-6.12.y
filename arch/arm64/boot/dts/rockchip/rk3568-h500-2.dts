@@ -13,8 +13,7 @@
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/soc/rockchip,vop2.h>
 #include "rk3568.dtsi"
-#include "rk3568-ip.dtsi"
-#include "rk3568-ip-rk809.dtsi"
+#include "rk3568-gpu-switch.dtsi"
 #include "rk3568-ramoops.dtsi"
 
 / {
@@ -997,12 +996,4 @@
 
 &usb_host1_xhci {
 	status = "okay";
-};
-
-/ {
-	/delete-node/ video-codec@fdea0400;
-};
-
-/ {
-	/delete-node/ rga@fdeb0000;
 };
