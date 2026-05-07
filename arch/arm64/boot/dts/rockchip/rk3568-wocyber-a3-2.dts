@@ -141,39 +141,6 @@
 		vin-supply = <&dc_12v>;
 	};
 
-	pcie30_avdd0v9: regulator-pcie30-avdd0v9 {
-		compatible = "regulator-fixed";
-		regulator-name = "pcie30_avdd0v9";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <900000>;
-		regulator-max-microvolt = <900000>;
-		vin-supply = <&vcc3v3_sys>;
-	};
-
-	pcie30_avdd1v8: regulator-pcie30-avdd1v8 {
-		compatible = "regulator-fixed";
-		regulator-name = "pcie30_avdd1v8";
-		regulator-always-on;
-		regulator-boot-on;
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		vin-supply = <&vcc3v3_sys>;
-	};
-
-	vcc3v3_pcie: regulator-vcc3v3-pcie {
-		compatible = "regulator-fixed";
-		regulator-name = "vcc3v3_pcie";
-		enable-active-high;
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&vcc3v3_pcie_en_pin>;
-		gpio = <&gpio0 RK_PD4 GPIO_ACTIVE_HIGH>;
-		startup-delay-us = <5000>;
-		vin-supply = <&vcc5v0_sys>;
-	};
-
 	vcc5v0_usb: regulator-vcc5v0-usb {
 		compatible = "regulator-fixed";
 		regulator-name = "vcc5v0_usb";
@@ -597,23 +564,19 @@
 	status = "okay";
 };
 
+&i2c3 {
+    status = "okay";
+};
+
+&i2c5 {
+    status = "okay";
+};
+
 &adc_keys {
 	vol-up-key {
 		label = "recovery";
 		linux,code = <KEY_RESTART>;
 	};
-};
-
-&pcie30phy {
-	status = "okay";
-};
-
-&pcie3x2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pcie_reset_pin>;
-	reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&vcc3v3_pcie>;
-	status = "okay";
 };
 
 &pinctrl {
@@ -642,16 +605,6 @@
 		};
 		soc_slppin_rst: soc-slppin-rst {
 			rockchip,pins = <0 RK_PA2 2 &pcfg_pull_none>;
-		};
-	};
-
-
-	pcie {
-		pcie_reset_pin: pcie-reset-pin {
-			rockchip,pins = <2 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-		vcc3v3_pcie_en_pin: vcc3v3-pcie-en-pin {
-			rockchip,pins = <0 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
@@ -777,19 +730,24 @@
 	status = "okay";
 };
 
+&vop {
+	assigned-clocks = <&cru DCLK_VOP0>;
+	assigned-clock-parents = <&pmucru PLL_HPLL>;
+	status = "okay";
+};
+
+&vop_mmu {
+	status = "okay";
+};
+
 &vp0 {
+	status = "okay";
 	vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
 		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
 		remote-endpoint = <&hdmi_in_vp0>;
 	};
 };
 
-&vop {
-	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
-	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
-	status = "okay";
-};
-
-&vop_mmu {
+&display_subsystem {
 	status = "okay";
 };
