@@ -125,16 +125,28 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
-	vcc3v3_pcie_ssd: regulator-vcc3v3-pcie-ssd {
+	vcc3v3_pcie: vcc3v3-pcie-regulator {
 		compatible = "regulator-fixed";
+		regulator-name = "vcc3v3_pcie";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
 		enable-active-high;
 		gpio = <&gpio3 RK_PC3 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&pcie_power_en>;
-		regulator-name = "vcc3v3_pcie_ssd";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
+		pinctrl-0 = <&pcie30_pwr>;
+		startup-delay-us = <5000>;
 		vin-supply = <&vcc5v0_sys>;
+	};
+
+	pcie_oe_regulator: pcie-oe-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "pcie_oe";
+		gpio = <&gpio3 RK_PA7 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pcie_oe>;
+		//enable-active-high;
+		regulator-always-on;
+		regulator-boot-on;
 	};
 
     pcie30_avdd0v9: regulator-pcie30-avdd0v9 {
@@ -189,7 +201,7 @@
 };
 
 &combphy1 {
-	phy-supply = <&vcc3v3_pcie30x1>;
+	phy-supply = <&pcie_oe_regulator>;
 	status = "okay";
 };
 
@@ -282,10 +294,11 @@
 &pcie3x2 {
 	num-lanes = <1>;
 	pinctrl-names = "default";
-	pinctrl-0 = <&pcie30x2_reset_h>;
+	pinctrl-0 = <&pcie30x2m1_pins>;
 	reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&vcc3v3_pcie_ssd>;
+	vpcie3v3-supply = <&vcc3v3_pcie>;
 	status = "okay";
+	phys = <&pcie30phy>;
 };
 
 &i2c0 {
@@ -316,6 +329,7 @@
 		#clock-cells = <1>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pmic_int>;
+		#sound-dai-cells = <0>;
 		system-power-controller;
 		wakeup-source;
 
@@ -552,11 +566,11 @@
 			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		pcie_power_en: pcie-power-en {
+		pcie30_pwr: pcie30-pwr {
 			rockchip,pins = <3 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		pcie_clk_oe_h: pcie-clk-oe-h {
+		pcie_oe: pcie-oe {
 			rockchip,pins = <3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
